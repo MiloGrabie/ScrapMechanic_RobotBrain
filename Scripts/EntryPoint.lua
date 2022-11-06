@@ -47,25 +47,18 @@ input = nil
 function read(self, deltaTime)
 
 	index = index + 1
-	if index % 30 ~= 0 then
+	if index % 10 ~= 0 then
 		return nil
 	end
-
-	shape = self.interactable.shape
-	body = self.interactable:getBody()
-	ang = shape:getWorldRotation()
-	pos = body:getWorldPosition()
-	vel = shape:getVelocity()
-	mass = body:getMass()
 
 	-- input = sm.json.parseJsonString("{\"data\":\"test\"}")
 	-- input = sm.json.parseJsonString("$MOD_DATA/JSON/interface_in.json")
 	input = read_input()
-	print(input)
 	-- print(input.setTargetAngle[1].targetAngle)
-	-- print(self.interactable:getBearings())
-
-	sm.json.save(sm.json.writeJsonString(stringify(self, shape, body, ang, pos, vel, mass)), "$MOD_DATA/Scripts/JSON/interface_out.json")
+	print(self.interactable:getBearings()[1].shapeB:getBody():getWorldPosition())
+	print(sm.joint.getLocalPosition(self.interactable:getBearings()[1]))
+	
+	sm.json.save(sm.json.writeJsonString(stringify(self)), "$MOD_DATA/Scripts/JSON/interface_out.json")
 	
 	if input.setTargetAngle ~= nil then
 		for index, joint in ipairs(input.setTargetAngle) do

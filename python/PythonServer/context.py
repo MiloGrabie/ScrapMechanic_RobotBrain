@@ -24,6 +24,11 @@ class Context:
                 print(e)
 
     def registerAction(self, action, param):
-        self.output.setdefault(action, {})
-        self.output[action].setdefault(param['index'], param)
+        self.output.setdefault(action, [])
+        result = [i for i, item in enumerate(self.output[action]) if item['index'] == param['index']]
+        if len(result) == 0:
+            self.output[action].append(param)
+        else:
+            self.output[action][result[0]] = param
+
         self.callback()

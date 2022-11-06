@@ -20,15 +20,20 @@ class Main:
         self.context.refresh()
         self.callAction()
         while True:
-            time.sleep(10)
+            time.sleep(5)
             self.context.refresh()
+            self.body.refresh()
+            print(self.body.parts[0].angle)
             self.callAction()
+            # print(self.body.parts[0].localPosition)
+            # print(self.body.parts[1].localPosition)
             # self.context.callback()
 
     def callAction(self):
         for joint in self.body.getJoints():
-            joint.targetAngle += 0.001
-            joint.move()
+            if (joint.index == 1):
+                joint.angle = -1 if joint.angle < 0 else 1;
+                joint.move()
 
 
 
