@@ -1,0 +1,10 @@
+{
+  "setTargetAngle": [
+    {
+      "index": 1,
+      "targetAngle": 1,
+      "targetVelocity": 10,
+      "maxImpulse": 10
+    }
+  ]
+}

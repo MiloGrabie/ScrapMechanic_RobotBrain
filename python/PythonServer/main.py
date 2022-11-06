@@ -1,16 +1,36 @@
-# This is a sample Python script.
+import json
+import re
+from context import Context
+from parts.body import Body
+import time
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+class Main:
+
+    body = None
+
+    def __init__(self):
+        self.context = Context()
+        self.init_object()
+        self.run()
+
+    def init_object(self):
+        self.body = Body(self.context)
+
+    def run(self):
+        self.context.refresh()
+        self.callAction()
+        while True:
+            time.sleep(10)
+            self.context.refresh()
+            self.callAction()
+            # self.context.callback()
+
+    def callAction(self):
+        for joint in self.body.getJoints():
+            joint.targetAngle += 0.001
+            joint.move()
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    Main()

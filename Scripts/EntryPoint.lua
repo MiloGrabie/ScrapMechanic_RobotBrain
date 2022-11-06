@@ -3,14 +3,10 @@ main_class.maxChildCount = -1
 main_class.maxParentCount = -1
 main_class.connectionInput = sm.interactable.connectionType.logic
 main_class.connectionOutput = sm.interactable.connectionType.bearing + sm.interactable.connectionType.logic -- none, logic, power, bearing, seated, piston, any
--- main_class.connectionOutput = sm.interactable.connectionType.bearing + sm.interactable.connectionType.power  -- none, logic, power, bearing, seated, piston, any
--- main_class.colorNormal = sm.color.new(0xdf7000ff)
--- main_class.colorHighlight = sm.color.new(0xef8010ff)
---main_class.poseWeightCount = 1
--- dofile("bearing_manager.lua")
-dofile("toolbox/PID.lua")
--- dofile("keys.lua")
-dofile("main.lua")
+
+dofile("utils.lua")
+dofile("Stringify.lua")
+dofile("ReadInput.lua")
 
 print("\n\n\n\n=================== RESET ================\n\n\n\n")
 
@@ -33,10 +29,48 @@ function main_class.server_onRefresh( self )
 end
 
 function main_class.server_onFixedUpdate( self, deltaTime )
-	file = io.open ("temp.lua", "r")
-	main(self, deltaTime)
+	-- read(self, deltaTime)
+	try {
+		function()
+			read(self, deltaTime)
+		end,
+        catch {
+            function(error)
+                print('caught error: ' .. error)
+            end
+        }
+	}
 end
 
-function main(self, deltaTime)
-	-- run("msg")
+index = 0
+input = nil
+function read(self, deltaTime)
+
+	index = index + 1
+	if index % 30 ~= 0 then
+		return nil
+	end
+
+	shape = self.interactable.shape
+	body = self.interactable:getBody()
+	ang = shape:getWorldRotation()
+	pos = body:getWorldPosition()
+	vel = shape:getVelocity()
+	mass = body:getMass()
+
+	-- input = sm.json.parseJsonString("{\"data\":\"test\"}")
+	-- input = sm.json.parseJsonString("$MOD_DATA/JSON/interface_in.json")
+	input = read_input()
+	print(input)
+	-- print(input.setTargetAngle[1].targetAngle)
+	-- print(self.interactable:getBearings())
+
+	sm.json.save(sm.json.writeJsonString(stringify(self, shape, body, ang, pos, vel, mass)), "$MOD_DATA/Scripts/JSON/interface_out.json")
+	
+	if input.setTargetAngle ~= nil then
+		for index, joint in ipairs(input.setTargetAngle) do
+			print(joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
+			sm.joint.setTargetAngle(self.interactable:getBearings()[joint.index], joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
+		end
+	end
 end
