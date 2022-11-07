@@ -2,7 +2,10 @@ import json
 import re
 from context import Context
 from parts.body import Body
+import inverseKinematics
 import time
+import numpy as np
+from math import pi
 
 class Main:
 
@@ -20,13 +23,21 @@ class Main:
         self.context.refresh()
         self.callAction()
         while True:
-            time.sleep(5)
+            time.sleep(0.1)
             self.context.refresh()
             self.body.refresh()
-            print(self.body.parts[0].angle)
-            self.callAction()
-            # print(self.body.parts[0].localPosition)
-            # print(self.body.parts[1].localPosition)
+            # print(self.body.parts[0].angle)
+            # self.callAction()
+            print(self.body.parts[0].localPosition)
+            length_first = np.linalg.norm(self.body.parts[1].localPosition - self.body.parts[0].localPosition)
+            length_second = np.linalg.norm(self.body.parts[2].localPosition - self.body.parts[1].localPosition)
+            print(self.body.parts[2].localPosition)
+            angles = inverseKinematics.calc(length_first + 1, length_second + 1)
+            self.body.getJoints()[0].angle = angles[0]
+            self.body.getJoints()[0].move()
+            self.body.getJoints()[1].angle = angles[1]
+            self.body.getJoints()[1].move()
+            print(f"angles {angles}")
             # self.context.callback()
 
     def callAction(self):

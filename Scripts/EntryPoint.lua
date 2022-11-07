@@ -51,6 +51,8 @@ function read(self, deltaTime)
 		return nil
 	end
 
+	shape = self.interactable.shape
+	body = self.interactable:getBody()
 	-- input = sm.json.parseJsonString("{\"data\":\"test\"}")
 	-- input = sm.json.parseJsonString("$MOD_DATA/JSON/interface_in.json")
 	input = read_input()
