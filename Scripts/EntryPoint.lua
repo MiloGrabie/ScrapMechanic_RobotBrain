@@ -51,20 +51,17 @@ function read(self, deltaTime)
 		return nil
 	end
 
+    print("loop")
 	shape = self.interactable.shape
 	body = self.interactable:getBody()
-	-- input = sm.json.parseJsonString("{\"data\":\"test\"}")
-	-- input = sm.json.parseJsonString("$MOD_DATA/JSON/interface_in.json")
+	print(shape.localPosition)
 	input = read_input()
-	-- print(input.setTargetAngle[1].targetAngle)
--- 	print(self.interactable:getBearings()[1].shapeB:getBody():getWorldPosition())
--- 	print(sm.joint.getLocalPosition(self.interactable:getBearings()[1]))
 	
 	sm.json.save(sm.json.writeJsonString(stringify(self)), "$MOD_DATA/Scripts/JSON/interface_out.json")
 	
 	if input.setTargetAngle ~= nil then
 		for index, joint in ipairs(input.setTargetAngle) do
-			print(joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
+-- 			print(joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
 			for _, local_joint in ipairs(self.interactable:getBearings()) do
 			    if (local_joint.id == joint.index) then
 			        sm.joint.setTargetAngle(local_joint, joint.targetAngle, joint.angularVelocity, joint.maxImpulse)

@@ -11,6 +11,7 @@ class InverseKinematics:
         self.arm = arm
         actuator_parameter = []
         for index, joint in enumerate(arm.joints):
+            if index == len(arm.joints)-1: break
             if index == 0: actuator_parameter.append('z')
             else: actuator_parameter.append('x')
             actuator_parameter.append(joint.length)

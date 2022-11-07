@@ -7,6 +7,7 @@ class Arm:
         self.first_joint = joint
         self.joints = self.init_joints()
         self.inverseKinematics = InverseKinematics(self)
+        self.correction = [1, 1, 1]  # relative position correction
 
     def init_joints(self):
         joint = self.first_joint
@@ -18,7 +19,7 @@ class Arm:
         return joints
 
     def move(self, objective):
-        angles = self.inverseKinematics.getAngle(objective)
+        angles = self.inverseKinematics.getAngle(objective * self.correction)
         for index, angle in enumerate(angles):
             self.joints[index].angle = angle
             self.joints[index].move()

@@ -17,7 +17,7 @@ class Joint(Part):
         self.zAxis = vectorize(part.zAxis)
         self.position = part.position
         self.angularVelocity = 3
-        self.maxImpulse = 1000
+        self.maxImpulse = 50
         self.joints = []
         self.length = 0
         if 'joints' in part:

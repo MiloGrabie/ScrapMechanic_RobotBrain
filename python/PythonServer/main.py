@@ -21,12 +21,20 @@ class Main:
     def run(self):
         self.context.refresh()
         self.callAction()
+        value = [7, 5, 5]
         while True:
             time.sleep(0.1)
             self.context.refresh()
             self.body.refresh()
-            print(self.body.parts[0].localPosition)
-            self.body.arms[0].move([5, 5, 5])
+            # print(self.body.parts[0].localPosition)
+            objective = np.array(value)
+            print(objective)
+            self.body.arms[0].move(objective * [-1, -1, 1]) # -1 -1 1
+            self.body.arms[1].move(objective * [1, 1, -1])
+            self.body.arms[2].move(objective * [1, -1, -1])
+            self.body.arms[3].move(objective * [-1, 1, 1])
+            value[1] -= 0.1
+
             # self.context.callback()
 
     def callAction(self):

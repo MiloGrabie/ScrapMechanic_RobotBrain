@@ -14,36 +14,26 @@ function stringify(main)
 	}
     
     out_table.joints = {}
---     for index, joint in ipairs(body:getJoints()) do
---         if joint:getShapeA().id ~= shape.id then
---             out_table.joints[joint.id] = jointToJsonTable(joint)
---             out_table.joints[joint.id].joints = {}
---             for indexB, jointB in ipairs(joint.shapeB.body:getJoints()) do
---                 out_table.joints[joint.id].joints[jointB.id] = jointToJsonTable(jointB)
---                 out_table.joints[joint.id].joints[jointB.id].joints = {}
---                 for indexC, jointC in ipairs(jointB.shapeB.body:getJoints()) do
---                     out_table.joints[joint.id].joints[jointB.id].joints[jointC.id] = jointToJsonTable(jointC)
---                 end
---             end
---         end
---     end
 
---     print("test")
-    joint = body:getJoints()[1]
-    joint_dico = {}
-    joint_dico.joints = {}
-    joint_dico.joints[joint.id] = jointToJsonTable(joint)
-    pointer = joint_dico.joints[joint.id]
-    while true do
-        sub_dico = {}
-        sub_dico[joint.id] = jointToJsonTable(joint)
-        pointer.joints = sub_dico
-        pointer = sub_dico[joint.id]
-        if joint.shapeB == nil then break end
-        if joint == nil then break end
-        joint = joint.shapeB.body:getJoints()[1]
+    for index, joint in ipairs(body:getJoints()) do
+--         joint = body:getJoints()[1]
+        first_joint = joint
+        joint_dico = {}
+        pointer = joint_dico
+        while true do
+            sub_dico = {}
+            sub_dico[joint.id] = jointToJsonTable(joint)
+            pointer.joints = sub_dico
+            pointer = sub_dico[joint.id]
+            if joint.shapeB == nil then break end
+            if joint == nil then break end
+            joint = joint.shapeB.body:getJoints()[1]
+        end
+--         print(joint_dico.joints)
+--         print(first_joint.id)
+        out_table.joints[first_joint.id] = joint_dico.joints[first_joint.id]
+--         print(out_table)
     end
-    out_table.joints = joint_dico.joints
 	return out_table
 end
 
