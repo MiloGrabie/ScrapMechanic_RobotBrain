@@ -4,25 +4,37 @@ import json
 from utils.actions import Actions
 from utils.toolbox import vectorize, vectorize_quat
 
+from python.PythonServer.parts.shape import Shape
+
 
 class Joint(Part):
 
     def __init__(self, context, part):
+        self.shapeB = Shape(part.shapeB)
+        self.localPosition = None
+        self.localRotation = None
+        self.angle = None
+        self.length = None
         self.context = context
         self.index = part.index
         self.targetAngle = None
-        self.refresh_data(part)
+        self.angle = part.angle
+        self.localRotation = vectorize_quat(part.localRotation)
+        self.localPosition = vectorize(part.localPosition)
         self.xAxis = vectorize(part.xAxis)
         self.yAxis = vectorize(part.yAxis)
         self.zAxis = vectorize(part.zAxis)
         self.position = part.position
-        self.angularVelocity = 3
-        self.maxImpulse = 50
+        self.angularVelocity = 1
+        self.maxImpulse = 500
         self.joints = []
+        self.getChildJoint(part)
+
+    def getChildJoint(self, part):
         self.length = 0
         if 'joints' in part:
             for joint in part.joints:
-                local_joint = Joint(context, joint)
+                local_joint = Joint(self.context, joint)
                 self.joints.append(local_joint)
                 self.length = local_joint.localPosition - self.localPosition
 
@@ -30,6 +42,10 @@ class Joint(Part):
         self.angle = part.angle
         self.localRotation = vectorize_quat(part.localRotation)
         self.localPosition = vectorize(part.localPosition)
+        if 'joints' in part:
+            for input_joint in part.joints:
+                [joint.refresh_data(input_joint) for joint in self.joints if joint.index == input_joint.index]
+        self.shapeB.refresh(part.shapeB)
 
     # def setTargetAngle(self, targetAngle, targetVelocity, maxImpulse):
     #

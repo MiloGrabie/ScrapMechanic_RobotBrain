@@ -7,6 +7,8 @@ value = [3, 3, -5]
 
 class InverseKinematics:
 
+    actuator_list = []
+
     def __init__(self, arm):
         self.arm = arm
         actuator_parameter = []

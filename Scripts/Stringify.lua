@@ -6,11 +6,13 @@ function stringify(main)
 	vel = shape:getVelocity()
 	mass = body:getMass()
 
+    print(body.centerOfMassPosition)
 	out_table = {
 		ang = VectToString(ang),
 		pos = VectToString(pos),	
 		vel = VectToString(vel),
-		mass = mass
+		mass_center = VectToString(body.centerOfMassPosition),
+		mass = mass,
 	}
     
     out_table.joints = {}
@@ -21,12 +23,12 @@ function stringify(main)
         joint_dico = {}
         pointer = joint_dico
         while true do
+            if joint == nil then break end
+            if joint.shapeB == nil then break end
             sub_dico = {}
             sub_dico[joint.id] = jointToJsonTable(joint)
             pointer.joints = sub_dico
             pointer = sub_dico[joint.id]
-            if joint.shapeB == nil then break end
-            if joint == nil then break end
             joint = joint.shapeB.body:getJoints()[1]
         end
 --         print(joint_dico.joints)
@@ -38,7 +40,7 @@ function stringify(main)
 end
 
 function jointToJsonTable(joint)
-    return {
+    jointJson = {
         index =  joint.id,
         angle = joint.angle,
         localPosition = VectToString(joint.localPosition),
@@ -48,6 +50,16 @@ function jointToJsonTable(joint)
         yAxis = VectToString(joint.yAxis),
         zAxis = VectToString(joint.zAxis),
     }
+    if joint.shapeB ~= nil then
+        if joint.shapeB.material == "Wood" then
+            print(joint.shapeB.body.centerOfMassPosition)
+--             print(joint.shapeB.body.worldPosition)
+        end
+        jointJson.shapeB = {
+            pos = VectToString(joint.shapeB.body.centerOfMassPosition)
+        }
+    end
+    return jointJson
 end
 
 function QuatToString(quaternion)

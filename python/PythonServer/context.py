@@ -1,6 +1,9 @@
 import re, json
 from munch import DefaultMunch
 
+from python.PythonServer.utils.actions import Actions
+
+
 class Context:
 
     input_file = './../../Scripts/JSON/interface_out.json'
@@ -31,4 +34,8 @@ class Context:
         else:
             self.output[action][result[0]] = param
 
+        self.callback()
+
+    def clearAction(self):
+        self.output.setdefault(Actions.Disarm, True)
         self.callback()

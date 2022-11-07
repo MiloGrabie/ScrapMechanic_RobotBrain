@@ -54,11 +54,17 @@ function read(self, deltaTime)
     print("loop")
 	shape = self.interactable.shape
 	body = self.interactable:getBody()
-	print(shape.localPosition)
+-- 	print(shape.localPosition)
 	input = read_input()
 	
 	sm.json.save(sm.json.writeJsonString(stringify(self)), "$MOD_DATA/Scripts/JSON/interface_out.json")
-	
+
+	if input.disarm ~= nil then
+	    for _, joint in ipairs(self.interactable:getBearings()) do
+	        sm.joint.setTargetAngle(joint, 0, 1, 1)
+	    end
+    end
+
 	if input.setTargetAngle ~= nil then
 		for index, joint in ipairs(input.setTargetAngle) do
 -- 			print(joint.targetAngle, joint.angularVelocity, joint.maxImpulse)

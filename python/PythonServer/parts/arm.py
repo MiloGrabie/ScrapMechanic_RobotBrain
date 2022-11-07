@@ -1,13 +1,24 @@
+from numpy.linalg import norm
+
 from python.PythonServer.inverseKinematics import InverseKinematics
 
 
 class Arm:
 
-    def __init__(self, joint):
+    def __init__(self, joint, body):
+        self.inverseKinematics = None
         self.first_joint = joint
+        self.end_joint = self.init_end_joint()
+        self.body = body
         self.joints = self.init_joints()
+        self.position_correction = [1, 1, 1]  # relative position correction
+        self.max_length = sum([norm(j.length) for j in self.joints])
+
+    def init_kinematics(self):
+        self.calcCorrection()
+        # for joint in self.joints:
+        #     joint.length *= self.position_correction
         self.inverseKinematics = InverseKinematics(self)
-        self.correction = [1, 1, 1]  # relative position correction
 
     def init_joints(self):
         joint = self.first_joint
@@ -18,8 +29,25 @@ class Arm:
             joint = joint.joints[0]
         return joints
 
+    def init_end_joint(self):
+        joint = self.first_joint
+        while True:
+            if len(joint.joints) == 0:
+                return joint
+            joint = joint.joints[0]
+
+    def refreshData(self, joint):
+        self.first_joint.refresh_data(joint)
+
+    def calcCorrection(self):
+        joint = self.first_joint
+        center_x, center_y = self.body.centroid[0], self.body.centroid[1]
+        x, y = joint.localPosition[0], joint.localPosition[1]
+        correction = [1, 1 if y > center_y else -1, 1 if x > center_x else -1]
+        self.position_correction = correction
+
     def move(self, objective):
-        angles = self.inverseKinematics.getAngle(objective * self.correction)
+        angles = self.inverseKinematics.getAngle(objective * self.position_correction)
         for index, angle in enumerate(angles):
             self.joints[index].angle = angle
             self.joints[index].move()
