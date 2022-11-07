@@ -14,47 +14,50 @@ function stringify(main)
 	}
     
     out_table.joints = {}
-    for index, joint in ipairs(body:getJoints()) do
-        if joint:getShapeA().id ~= shape.id then
-            out_table.joints[joint.id] = {
-                index =  joint.id,
-                angle = joint.angle,
-                localPosition = VectToString(joint.localPosition),
-                localRotation = QuatToString(joint.localRotation),
-                position = VectToString(joint.worldPosition),
-                xAxis = VectToString(joint.xAxis),
-                yAxis = VectToString(joint.yAxis),
-                zAxis = VectToString(joint.zAxis),
-            }
-            out_table.joints[joint.id].joints = {}
-            for indexB, jointB in ipairs(joint.shapeB.body:getJoints()) do
-                out_table.joints[joint.id].joints[jointB.id] = {
-                    indexB =  jointB.id,
-                    angle = jointB.angle,
-                    localPosition = VectToString(jointB.localPosition),
-                    localRotation = QuatToString(jointB.localRotation),
-                    position = VectToString(jointB.worldPosition),
-                    xAxis = VectToString(jointB.xAxis),
-                    yAxis = VectToString(jointB.yAxis),
-                    zAxis = VectToString(jointB.zAxis),
-                }
-                out_table.joints[joint.id].joints[jointB.id].joints = {}
-                for indexC, jointC in ipairs(jointB.shapeB.body:getJoints()) do
-                    out_table.joints[joint.id].joints[jointB.id].joints[jointC.id] = {
-                        indexB =  jointC.id,
-                        angle = jointC.angle,
-                        localPosition = VectToString(jointC.localPosition),
-                        localRotation = QuatToString(jointC.localRotation),
-                        position = VectToString(jointC.worldPosition),
-                        xAxis = VectToString(jointC.xAxis),
-                        yAxis = VectToString(jointC.yAxis),
-                        zAxis = VectToString(jointC.zAxis),
-                    }
-                end
-            end
-        end
+--     for index, joint in ipairs(body:getJoints()) do
+--         if joint:getShapeA().id ~= shape.id then
+--             out_table.joints[joint.id] = jointToJsonTable(joint)
+--             out_table.joints[joint.id].joints = {}
+--             for indexB, jointB in ipairs(joint.shapeB.body:getJoints()) do
+--                 out_table.joints[joint.id].joints[jointB.id] = jointToJsonTable(jointB)
+--                 out_table.joints[joint.id].joints[jointB.id].joints = {}
+--                 for indexC, jointC in ipairs(jointB.shapeB.body:getJoints()) do
+--                     out_table.joints[joint.id].joints[jointB.id].joints[jointC.id] = jointToJsonTable(jointC)
+--                 end
+--             end
+--         end
+--     end
+
+--     print("test")
+    joint = body:getJoints()[1]
+    joint_dico = {}
+    joint_dico.joints = {}
+    joint_dico.joints[joint.id] = jointToJsonTable(joint)
+    pointer = joint_dico.joints[joint.id]
+    while true do
+        sub_dico = {}
+        sub_dico[joint.id] = jointToJsonTable(joint)
+        pointer.joints = sub_dico
+        pointer = sub_dico[joint.id]
+        if joint.shapeB == nil then break end
+        if joint == nil then break end
+        joint = joint.shapeB.body:getJoints()[1]
     end
+    out_table.joints = joint_dico.joints
 	return out_table
+end
+
+function jointToJsonTable(joint)
+    return {
+        index =  joint.id,
+        angle = joint.angle,
+        localPosition = VectToString(joint.localPosition),
+        localRotation = QuatToString(joint.localRotation),
+        position = VectToString(joint.worldPosition),
+        xAxis = VectToString(joint.xAxis),
+        yAxis = VectToString(joint.yAxis),
+        zAxis = VectToString(joint.zAxis),
+    }
 end
 
 function QuatToString(quaternion)

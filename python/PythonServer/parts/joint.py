@@ -26,7 +26,6 @@ class Joint(Part):
                 self.joints.append(local_joint)
                 self.length = local_joint.localPosition - self.localPosition
 
-
     def refresh_data(self, part):
         self.angle = part.angle
         self.localRotation = vectorize_quat(part.localRotation)

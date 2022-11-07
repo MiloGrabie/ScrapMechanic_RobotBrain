@@ -6,8 +6,8 @@ import time
 import numpy as np
 from math import pi
 
-class Main:
 
+class Main:
     body = None
 
     def __init__(self):
@@ -26,7 +26,7 @@ class Main:
             self.context.refresh()
             self.body.refresh()
             print(self.body.parts[0].localPosition)
-            self.body.arms[0].move([5,5,5])
+            self.body.arms[0].move([5, 5, 5])
             # self.context.callback()
 
     def callAction(self):

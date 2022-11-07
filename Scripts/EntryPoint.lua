@@ -57,8 +57,8 @@ function read(self, deltaTime)
 	-- input = sm.json.parseJsonString("$MOD_DATA/JSON/interface_in.json")
 	input = read_input()
 	-- print(input.setTargetAngle[1].targetAngle)
-	print(self.interactable:getBearings()[1].shapeB:getBody():getWorldPosition())
-	print(sm.joint.getLocalPosition(self.interactable:getBearings()[1]))
+-- 	print(self.interactable:getBearings()[1].shapeB:getBody():getWorldPosition())
+-- 	print(sm.joint.getLocalPosition(self.interactable:getBearings()[1]))
 	
 	sm.json.save(sm.json.writeJsonString(stringify(self)), "$MOD_DATA/Scripts/JSON/interface_out.json")
 	
@@ -66,7 +66,7 @@ function read(self, deltaTime)
 		for index, joint in ipairs(input.setTargetAngle) do
 			print(joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
 			for _, local_joint in ipairs(self.interactable:getBearings()) do
-			    if (local_joint.id == joint.id) then
+			    if (local_joint.id == joint.index) then
 			        sm.joint.setTargetAngle(local_joint, joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
                 end
 			end
