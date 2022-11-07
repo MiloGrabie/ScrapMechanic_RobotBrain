@@ -47,7 +47,7 @@ input = nil
 function read(self, deltaTime)
 
 	index = index + 1
-	if index % 10 ~= 0 then
+	if index % 50 ~= 0 then
 		return nil
 	end
 
@@ -65,7 +65,11 @@ function read(self, deltaTime)
 	if input.setTargetAngle ~= nil then
 		for index, joint in ipairs(input.setTargetAngle) do
 			print(joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
-			sm.joint.setTargetAngle(self.interactable:getBearings()[joint.index], joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
+			for _, local_joint in ipairs(self.interactable:getBearings()) do
+			    if (local_joint.id == joint.id) then
+			        sm.joint.setTargetAngle(local_joint, joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
+                end
+			end
 		end
 	end
 end

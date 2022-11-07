@@ -4,6 +4,7 @@ import json
 class Body:
 
     parts = []
+    arms = []
 
     def __init__(self, context):
         self.context = context
@@ -12,6 +13,7 @@ class Body:
     def refresh(self):
         for parts in self.context.data.joints:
             [joint.refresh_data(parts) for joint in self.parts if joint.index == parts.index]
+
 
     def init_joints(self):
         for parts in self.context.data.joints:
