@@ -1,10 +1,19 @@
+s = "LVIII"
 
-import tinyik
-import numpy as np
+number = 0
+i = 0
+while i < len(s):
+    char = s[i]
+    if char == 'I' and i < len(s) and s[i+1] == 'X':
+        number += 9
+        i += 1
+    if char == 'I' and i < len(s) and s[i+1] == 'V':
+        number += 4
+        i += 1
+    elif char == 'V': number += 5
+    elif char == 'X': number += 10
+    elif char == 'I': number += 1
+    elif char == 'I': number += 1
+    i += 1
 
-# arm = tinyik.Actuator(['z', [1., 0., 0.], 'z', [1., 0., 0.]])
-# arm.angles = [np.pi / 6, np.pi / 3]
-# arm.ee = [2 / np.sqrt(2), 2 / np.sqrt(2), 0.]
-# leg = tinyik.Actuator([[.3, .0, .0], 'z', [.3, .0, .0], 'x', [.0, -.5, .0], 'x', [.0, -.5, .0]])
-# leg.angles = np.deg2rad([30, 45, -90])
-# tinyik.visualize(leg)
+print(number)

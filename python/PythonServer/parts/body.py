@@ -1,6 +1,9 @@
 from parts.joint import Joint
 import json
 
+from python.PythonServer.parts.arm import Arm
+
+
 class Body:
 
     parts = []
@@ -17,7 +20,9 @@ class Body:
 
     def init_joints(self):
         for parts in self.context.data.joints:
-            self.parts.append(Joint(self.context, parts))
+            joint = Joint(self.context, parts)
+            self.arms.append(Arm(joint))
+            self.parts.append(joint)
 
     def getJoints(self) -> list:
         return [joint for joint in self.parts if isinstance(joint, Joint)] # TODO : only select joints
