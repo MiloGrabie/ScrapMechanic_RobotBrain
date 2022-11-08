@@ -33,7 +33,7 @@ class Main:
             self.body.refresh()
             # print("pos", self.body.arms[0].joints[0].shapeB.pos)
             # print("pos", self.body.arms[0].end_joint.shapeB.pos)
-            self.body.control_gravity()
+            self.body.brain.control_gravity()
             time.sleep(1)
             # value[1] -= 0.1d
             # value[0] -= 0.1

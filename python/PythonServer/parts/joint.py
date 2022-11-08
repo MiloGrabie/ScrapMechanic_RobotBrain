@@ -11,9 +11,6 @@ class Joint(Part):
 
     def __init__(self, context, part):
         self.shapeB = Shape(part.shapeB)
-        self.localPosition = None
-        self.localRotation = None
-        self.angle = None
         self.length = None
         self.context = context
         self.index = part.index
@@ -24,7 +21,7 @@ class Joint(Part):
         self.xAxis = vectorize(part.xAxis)
         self.yAxis = vectorize(part.yAxis)
         self.zAxis = vectorize(part.zAxis)
-        self.position = part.position
+        self.position = vectorize(part.position)
         self.angularVelocity = 1
         self.maxImpulse = 500
         self.joints = []

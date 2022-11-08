@@ -5,6 +5,7 @@ import json
 import numpy as np
 
 from python.PythonServer.parts.arm import Arm
+from python.PythonServer.parts.brain import Brain
 from python.PythonServer.utils.toolbox import vectorize
 
 
@@ -21,26 +22,7 @@ class Body:
         self.init_kinematics()
         self.pos = vectorize(self.context.data.pos)
         self.gravity_center = None
-
-    def control_gravity(self):
-        gv = self.gravity_center
-        pos_list = [[norm(gv - arm.end_joint.shapeB.pos), arm] for arm in self.arms]
-        # print([(pos[0], pos[1]) for pos in pos_list])
-        dist_gv_pos = gv - self.pos
-        normalized = np.array([dist_gv_pos[0] / abs(dist_gv_pos[0]), dist_gv_pos[1] / abs(dist_gv_pos[1]), dist_gv_pos[2] / abs(dist_gv_pos[2])])
-        print("distance centre machine", dist_gv_pos)
-        # print(pos_list)
-        # print(min(pos_list))
-        closest_arm = min(pos_list)[1]
-        farthest_point = [5, 5, 5]
-        objective = np.array(farthest_point) * normalized
-        objective[2] = 5
-        print(objective)
-        closest_arm.move(objective)
-        print(closest_arm.max_length)
-        print(norm(objective))
-        # print(nearest_point, gv)
-        # print("distance", norm(gv - nearest_point))
+        self.brain = Brain(self)
 
     def refresh(self):
         for input_joint in self.context.data.joints:
@@ -55,6 +37,15 @@ class Body:
             self.arms.append(Arm(joint, self))
             self.parts.append(joint)
 
+        self.calcSibling()
+
+    def calcSibling(self):
+        for arm in self.arms:
+            pos_list = [[norm(arm.first_joint.position - arm_local.first_joint.position), arm_local] for arm_local in self.arms]
+            closest_arm = sorted(pos_list, key=lambda tup: tup[0])[1:3]
+            arm.siblings = [tup[1] for tup in closest_arm]
+
+
     def getJoints(self) -> list:
         return [joint for joint in self.parts if isinstance(joint, Joint)]
 
@@ -66,6 +57,7 @@ class Body:
 
     def init_kinematics(self):
         [arm.init_kinematics() for arm in self.arms]
+
 
 
 
