@@ -1,19 +1,21 @@
-import re, json
+import json
 from munch import DefaultMunch
 
-from python.PythonServer.utils.actions import Actions
+from python.PythonServer.AiRobot.utils.actions import Actions
 
 
 class Context:
 
-    input_file = './../../Scripts/JSON/interface_out.json'
-    output_file = './../../Scripts/JSON/interface_in.json'
+    input_file = '../../../Scripts/JSON/interface_out.json'
+    output_file = '../../../Scripts/JSON/interface_in.json'
 
-    def __init__(self):
+    def __init__(self, read_only=False):
+        self.read_only = read_only
         self.output = {}
         self.refresh()
 
     def callback(self):
+        if self.read_only: return
         open(self.output_file, 'w').write(json.dumps(self.output))
 
     def refresh(self):

@@ -1,6 +1,6 @@
 from numpy.linalg import norm
 
-from python.PythonServer.inverseKinematics import InverseKinematics
+from python.PythonServer.AiRobot.inverseKinematics import InverseKinematics
 
 
 class Arm:

@@ -1,7 +1,7 @@
 from numpy import array
 from numpy.linalg import norm
 
-from python.PythonServer.utils.toolbox import getFarthestPoint
+from python.PythonServer.AiRobot.utils.toolbox import getFarthestPoint
 
 
 class Brain:

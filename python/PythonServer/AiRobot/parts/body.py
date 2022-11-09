@@ -1,12 +1,9 @@
 from numpy.linalg import norm
 from parts.joint import Joint
-import json
 
-import numpy as np
-
-from python.PythonServer.parts.arm import Arm
-from python.PythonServer.parts.brain import Brain
-from python.PythonServer.utils.toolbox import vectorize
+from python.PythonServer.AiRobot.parts.arm import Arm
+from python.PythonServer.AiRobot.parts.brain import Brain
+from python.PythonServer.AiRobot.utils.toolbox import vectorize
 
 
 class Body:
@@ -57,7 +54,6 @@ class Body:
 
     def init_kinematics(self):
         [arm.init_kinematics() for arm in self.arms]
-
 
 
 

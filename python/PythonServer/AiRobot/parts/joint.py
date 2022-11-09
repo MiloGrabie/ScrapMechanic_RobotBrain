@@ -1,10 +1,9 @@
 from parts.part import Part
-import json
 
 from utils.actions import Actions
 from utils.toolbox import vectorize, vectorize_quat
 
-from python.PythonServer.parts.shape import Shape
+from python.PythonServer.AiRobot.parts.shape import Shape
 
 
 class Joint(Part):
@@ -23,7 +22,7 @@ class Joint(Part):
         self.zAxis = vectorize(part.zAxis)
         self.position = vectorize(part.position)
         self.angularVelocity = 1
-        self.maxImpulse = 500
+        self.maxImpulse = 350
         self.joints = []
         self.getChildJoint(part)
 
@@ -56,3 +55,4 @@ class Joint(Part):
             "maxImpulse": self.maxImpulse,
         }
         self.context.registerAction(Actions.setTargetAngle, action)
+
