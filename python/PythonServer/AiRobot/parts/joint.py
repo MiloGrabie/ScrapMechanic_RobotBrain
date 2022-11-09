@@ -38,6 +38,7 @@ class Joint(Part):
         self.angle = part.angle
         self.localRotation = vectorize_quat(part.localRotation)
         self.localPosition = vectorize(part.localPosition)
+        self.position = vectorize(part.position)
         if 'joints' in part:
             for input_joint in part.joints:
                 [joint.refresh_data(input_joint) for joint in self.joints if joint.index == input_joint.index]

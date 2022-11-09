@@ -51,3 +51,7 @@ class Arm:
         for index, angle in enumerate(angles):
             self.joints[index].angle = angle
             self.joints[index].move()
+
+    @property
+    def shoulder_pos(self):
+        return self.first_joint.position

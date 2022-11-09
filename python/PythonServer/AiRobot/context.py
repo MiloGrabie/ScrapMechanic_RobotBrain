@@ -6,8 +6,10 @@ from python.PythonServer.AiRobot.utils.actions import Actions
 
 class Context:
 
-    input_file = '../../../Scripts/JSON/interface_out.json'
-    output_file = '../../../Scripts/JSON/interface_in.json'
+    path = r"C:\Users\Milo\AppData\Roaming\Axolot Games\Scrap " \
+           r"Mechanic\User\User_76561198130980987\Mods\Robot_Brain\Scripts\JSON"
+    input_file = path + r"\interface_out.json"
+    output_file = path + r"\interface_in.json"
 
     def __init__(self, read_only=False):
         self.read_only = read_only
@@ -29,6 +31,7 @@ class Context:
                 print(e)
 
     def registerAction(self, action, param):
+        self.output.pop(Actions.Disarm, None)
         self.output.setdefault(action, [])
         result = [i for i, item in enumerate(self.output[action]) if item['index'] == param['index']]
         if len(result) == 0:

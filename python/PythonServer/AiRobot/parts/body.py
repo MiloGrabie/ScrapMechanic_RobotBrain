@@ -1,8 +1,8 @@
 from numpy.linalg import norm
-from parts.joint import Joint
 
 from python.PythonServer.AiRobot.parts.arm import Arm
 from python.PythonServer.AiRobot.parts.brain import Brain
+from python.PythonServer.AiRobot.parts.joint import Joint
 from python.PythonServer.AiRobot.utils.toolbox import vectorize
 
 
@@ -50,7 +50,8 @@ class Body:
         list_shoulder = [arm.first_joint for arm in self.arms]
         list_x = [joint.localPosition[0] for joint in list_shoulder]
         list_y = [joint.localPosition[1] for joint in list_shoulder]
-        self.centroid = (sum(list_x) / len(list_shoulder), sum(list_y) / len(list_shoulder))
+        list_z = [joint.localPosition[2] for joint in list_shoulder]
+        self.centroid = (sum(list_x) / len(list_shoulder), sum(list_y) / len(list_shoulder), sum(list_z) / len(list_shoulder))
 
     def init_kinematics(self):
         [arm.init_kinematics() for arm in self.arms]
