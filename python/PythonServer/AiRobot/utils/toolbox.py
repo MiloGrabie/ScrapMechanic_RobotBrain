@@ -28,6 +28,5 @@ def getFarthestPoint(circle_center, radius, a, b):
     x *= radius  # multiply by the radius
     x = abs(x)
     midpoint = [(a[0] + b[0])/2, (a[1] + b[1])/2]
-    x *= [1 if circle_center[0] < midpoint[0] else -1, 1 if circle_center[1] < midpoint[1] else -1]
     e = [circle_center[0] + x[0], circle_center[1] + x[1]]  # result construction
     return array(e)

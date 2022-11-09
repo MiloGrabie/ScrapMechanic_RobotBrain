@@ -48,9 +48,9 @@ class Body:
 
     def calcCentroid(self):
         list_shoulder = [arm.first_joint for arm in self.arms]
-        list_x = [joint.localPosition[0] for joint in list_shoulder]
-        list_y = [joint.localPosition[1] for joint in list_shoulder]
-        list_z = [joint.localPosition[2] for joint in list_shoulder]
+        list_x = [joint.position[0] for joint in list_shoulder]
+        list_y = [joint.position[1] for joint in list_shoulder]
+        list_z = [joint.position[2] for joint in list_shoulder]
         self.centroid = (sum(list_x) / len(list_shoulder), sum(list_y) / len(list_shoulder), sum(list_z) / len(list_shoulder))
 
     def init_kinematics(self):

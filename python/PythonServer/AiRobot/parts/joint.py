@@ -21,7 +21,7 @@ class Joint(Part):
         self.yAxis = vectorize(part.yAxis)
         self.zAxis = vectorize(part.zAxis)
         self.position = vectorize(part.position)
-        self.angularVelocity = 1
+        self.angularVelocity = 1.5
         self.maxImpulse = 350
         self.joints = []
         self.getChildJoint(part)

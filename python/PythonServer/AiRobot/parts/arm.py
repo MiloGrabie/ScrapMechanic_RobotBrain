@@ -6,6 +6,7 @@ from python.PythonServer.AiRobot.inverseKinematics import InverseKinematics
 class Arm:
 
     def __init__(self, joint, body):
+        self.objective = None
         self.inverseKinematics = None
         self.first_joint = joint
         self.end_joint = self.init_end_joint()
@@ -42,12 +43,14 @@ class Arm:
     def calcCorrection(self):
         joint = self.first_joint
         center_x, center_y = self.body.centroid[0], self.body.centroid[1]
-        x, y = joint.localPosition[0], joint.localPosition[1]
-        correction = [1, 1 if y > center_y else -1, 1 if x > center_x else -1]
+        x, y = joint.position[0], joint.position[1]
+        correction = [1, 1 if y > center_y else -1, -1 if x < center_x else 1]
         self.position_correction = correction
 
-    def move(self, objective):
-        angles = self.inverseKinematics.getAngle(objective * self.position_correction)
+    def move(self, objective=None):
+        if objective is not None:
+            self.objective = objective
+        angles = self.inverseKinematics.getAngle(self.objective * self.position_correction)
         for index, angle in enumerate(angles):
             self.joints[index].angle = angle
             self.joints[index].move()
@@ -55,3 +58,7 @@ class Arm:
     @property
     def shoulder_pos(self):
         return self.first_joint.position
+
+    @property
+    def foot_pos(self):
+        return self.end_joint.position
