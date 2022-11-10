@@ -1,3 +1,4 @@
+from numpy import array
 from numpy.linalg import norm
 
 from python.PythonServer.AiRobot.inverseKinematics import InverseKinematics
@@ -6,19 +7,17 @@ from python.PythonServer.AiRobot.inverseKinematics import InverseKinematics
 class Arm:
 
     def __init__(self, joint, body):
-        self.objective = None
+        self.objective = array([3, 3, 3])
         self.inverseKinematics = None
         self.first_joint = joint
         self.end_joint = self.init_end_joint()
         self.body = body
         self.joints = self.init_joints()
-        self.position_correction = [1, 1, 1]  # relative position correction
+        #self.position_correction = [1, 1, 1]  # relative position correction
         self.max_length = sum([norm(j.length) for j in self.joints])
 
     def init_kinematics(self):
-        self.calcCorrection()
-        # for joint in self.joints:
-        #     joint.length *= self.position_correction
+        #self.calcCorrection()
         self.inverseKinematics = InverseKinematics(self)
 
     def init_joints(self):
@@ -40,20 +39,18 @@ class Arm:
     def refreshData(self, joint):
         self.first_joint.refresh_data(joint)
 
-    def calcCorrection(self):
-        joint = self.first_joint
-        center_x, center_y = self.body.centroid[0], self.body.centroid[1]
-        x, y = joint.position[0], joint.position[1]
-        correction = [1, 1 if y > center_y else -1, -1 if x < center_x else 1]
-        self.position_correction = correction
-
     def move(self, objective=None):
         if objective is not None:
             self.objective = objective
-        angles = self.inverseKinematics.getAngle(self.objective * self.position_correction)
+        angles = self.inverseKinematics.getAngle(self.objective)
         for index, angle in enumerate(angles):
             self.joints[index].angle = angle
             self.joints[index].move()
+
+    @property
+    def default(self):
+        return self.first_joint.position - array([0, 0, 5])
+        # return self.first_joint.position + array([0, 0, 5])
 
     @property
     def shoulder_pos(self):

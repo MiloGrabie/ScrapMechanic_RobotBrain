@@ -1,9 +1,13 @@
 import json
 import re
+
+from numpy.linalg import norm
+
 from context import Context
 from parts.body import Body
 import time
 import numpy as np
+from multi_legged.body_ml import Body_ML
 from math import pi
 
 
@@ -21,24 +25,25 @@ class Main:
     def run(self):
         self.context.refresh()
         self.context.clearAction()
-        time.sleep(2)
-        value = [0, 4, 5]
-        objective = np.array(value)
-        for arm in self.body.arms:
-            arm.move(objective)
-        # objective = np.array(value)
-        # self.body.arms[0].move(np.array([0., 0, 4]))   # [-1, -1, 1]
-        # self.body.arms[1].move(objective)   # [1, 1, -1]
-        # self.body.arms[2].move(np.array([0., 0, 4]))   # [1, -1, -1]
-        # self.body.arms[3].move(objective)   # [-1, 1, 1]
+        # time.sleep(2)
+        value = [0, 12, 11]
+
         while True:
             self.context.refresh()
             self.body.refresh()
-            self.body.brain.doMagic()
-            self.body.brain.move([1,0])
+            # value[0] -= 0.1
+            # value[1] -= 0.1
+            # value[2] -= 0.1
+            arm = self.body.arms[0]
+            print("default", arm.shoulder_pos - arm.foot_pos)
+            print([norm(j.length) for j in arm.joints])
+            print([j.length for j in arm.joints])
+            objective = np.array(value)
+            self.body.brain.setArms(objective)
+            # self.body.brain.doMagic()
+            # self.body.brain.move([1,0])
 
             time.sleep(0.5)
-            # value[1] -= 0.1d
 
 
     # def callAction(self):

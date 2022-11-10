@@ -52,6 +52,10 @@ class PlotRobot:
         #     points = [a.first_joint.position for a in [arm.siblings[0], arm, arm.siblings[1]]]
         self.plot3D([a.first_joint.position for a in arms])
 
+        [self.scatter3D(a.default) for a in arms]
+
+        print(arms[0].first_joint.position - arms[1].end_joint.position)
+
         points = [a.end_joint.position for a in arms]
         x, y, z = zip(*points)
         self.ax.plot3D(x, y, [0]*len(points))
