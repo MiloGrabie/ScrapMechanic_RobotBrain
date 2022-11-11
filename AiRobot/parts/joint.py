@@ -3,7 +3,7 @@ from parts.part import Part
 from utils.actions import Actions
 from utils.toolbox import vectorize, vectorize_quat
 
-from python.PythonServer.AiRobot.parts.shape import Shape
+from AiRobot.parts.shape import Shape
 
 
 class Joint(Part):

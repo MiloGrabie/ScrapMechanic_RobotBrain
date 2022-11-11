@@ -1,10 +1,9 @@
 from numpy.linalg import norm
-from typing_extensions import override
 
-from python.PythonServer.AiRobot.multi_legged.arm_ml import Arm_ML
-from python.PythonServer.AiRobot.multi_legged.brain_ML import Brain_ML
-from python.PythonServer.AiRobot.parts.body import Body
-from python.PythonServer.AiRobot.parts.joint import Joint
+from AiRobot.multi_legged.arm_ml import Arm_ML
+from AiRobot.multi_legged.brain_ML import Brain_ML
+from AiRobot.parts.body import Body
+from AiRobot.parts.joint import Joint
 
 
 class Body_ML(Body):
@@ -14,7 +13,6 @@ class Body_ML(Body):
         self.calcCentroid()  # center of shoulders
         self.calc_corrections()
 
-    @override
     def setBrain(self):
         self.brain = Brain_ML(self)
 

@@ -1,1 +1,1 @@
-{"setTargetAngle": [{"index": 35.0, "targetAngle": -7.447267465305951e-09, "angularVelocity": 1.5, "maxImpulse": 350}, {"index": 36.0, "targetAngle": 0.0831401295383494, "angularVelocity": 1.5, "maxImpulse": 350}, {"index": 37.0, "targetAngle": 2.1897743431542146e-06, "angularVelocity": 1.5, "maxImpulse": 350}]}
+{"disarm": true}

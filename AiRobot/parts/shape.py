@@ -1,4 +1,4 @@
-from python.PythonServer.AiRobot.utils.toolbox import vectorize
+from AiRobot.utils.toolbox import vectorize
 
 
 class Shape:

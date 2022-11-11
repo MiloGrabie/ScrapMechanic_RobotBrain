@@ -1,9 +1,9 @@
 from numpy.linalg import norm
 
-from python.PythonServer.AiRobot.parts.arm import Arm
-from python.PythonServer.AiRobot.parts.brain import Brain
-from python.PythonServer.AiRobot.parts.joint import Joint
-from python.PythonServer.AiRobot.utils.toolbox import vectorize
+from AiRobot.parts.arm import Arm
+from AiRobot.parts.brain import Brain
+from AiRobot.parts.joint import Joint
+from AiRobot.utils.toolbox import vectorize
 
 
 class Body:

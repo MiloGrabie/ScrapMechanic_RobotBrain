@@ -1,7 +1,7 @@
 import json
 from munch import DefaultMunch
 
-from python.PythonServer.AiRobot.utils.actions import Actions
+from utils.actions import Actions
 
 
 class Context:

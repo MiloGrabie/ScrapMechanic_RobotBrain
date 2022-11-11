@@ -3,9 +3,6 @@ from numpy.linalg import norm
 from shapely import geometry
 
 
-from python.PythonServer.AiRobot.utils.toolbox import getFarthestPoint
-
-
 class Brain:
 
     def __init__(self, body):

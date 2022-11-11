@@ -1,6 +1,5 @@
-from typing_extensions import override
 
-from python.PythonServer.AiRobot.parts.arm import Arm
+from AiRobot.parts.arm import Arm
 
 
 class Arm_ML(Arm):
@@ -16,7 +15,6 @@ class Arm_ML(Arm):
         correction = [1, 1 if y > center_y else -1, -1 if x < center_x else 1]
         self.position_correction = correction
 
-    @override
     def move(self, objective=None):
         if objective is not None:
             self.objective = objective
