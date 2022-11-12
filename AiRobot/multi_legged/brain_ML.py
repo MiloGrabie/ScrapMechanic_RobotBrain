@@ -17,6 +17,11 @@ class Brain_ML:
                 arm.objective += direction
                 arm.move()
 
+    def setArms(self, objective):
+        for arm in self.body.arms:
+            arm.objective = objective
+            arm.move()
+
     def doMagic(self):
         # self.control_gravity()
         self.control_latitude()
@@ -34,9 +39,9 @@ class Brain_ML:
         # closest_arm = self.body.arms[0]
 
         shoulder = closest_arm.first_joint
-        center_influ = shoulder.position
-        sib_a = closest_arm.siblings[0].end_joint.position
-        sib_b = closest_arm.siblings[1].end_joint.position
+        center_influ = shoulder.worldPosition
+        sib_a = closest_arm.siblings[0].end_joint.worldPosition
+        sib_b = closest_arm.siblings[1].end_joint.worldPosition
         farthest_point = getFarthestPoint(
             [center_influ[0], center_influ[1]],
             closest_arm.max_length - 5,

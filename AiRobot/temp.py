@@ -1,26 +1,35 @@
+import matplotlib
+from ikpy.chain import Chain
+from ikpy.link import OriginLink, URDFLink
+from numpy import array
 
-import numpy as np
+my_chain = Chain(name='left_arm', links=[
+    OriginLink(),
+    URDFLink(
+      name="shoulder",
+      origin_translation=array([-10, 0, 5]),
+      origin_orientation=array([0, 0, 0]),
+      rotation=array([0, 0, 1]),
+    ),
+    URDFLink(
+      name="elbow",
+      origin_translation=array([25, 0, 0]),
+      origin_orientation=array([0, 0, 0]),
+      rotation=array([0, 1, 0]),
+    ),
+    URDFLink(
+      name="wrist",
+      origin_translation=array([22, 0, 0]),
+      origin_orientation=array([0, 0, 0]),
+      rotation=array([0, 1, 0]),
+    )
+])
+
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-
-plt.ion()
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-
-def refresh_plot():
-    ax.cla()
-    y = np.random.random([4,3])*10
-    vectors = [[0,0,0], [10,10,10], [15,15,15]]
-
-    coord = [[v[i] for v in vectors] for i, _ in enumerate(vectors[0])]
-
-    ax.plot3D(coord[0], coord[1], coord[2])
-    # ax.scatter(10,k,k)
-    # ax.scatter(k,k,10)
-    plt.draw()
-    plt.pause(0.02)
-
-refresh_plot()
-refresh_plot()
-refresh_plot()
-print("soleil")
+# fig, ax = plot_utils.init_3d_figure()
+my_chain.plot(my_chain.inverse_kinematics(array([10, 2, 10])), ax)
+# plt.xlim(-0.1, 0.1)
+# plt.ylim(-0.1, 0.1)
+plt.show()

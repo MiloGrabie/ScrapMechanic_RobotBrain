@@ -26,14 +26,14 @@ class Body_ML(Body):
 
     def calcSibling(self):
         for arm in self.arms:
-            pos_list = [[norm(arm.first_joint.position - arm_local.first_joint.position), arm_local] for arm_local in
+            pos_list = [[norm(arm.first_joint.worldPosition - arm_local.first_joint.worldPosition), arm_local] for arm_local in
                         self.arms]
             closest_arm = sorted(pos_list, key=lambda tup: tup[0])[1:3]
             arm.siblings = [tup[1] for tup in closest_arm]
 
     def calcCentroid(self):
         list_shoulder = [arm.first_joint for arm in self.arms]
-        x, y, z = zip(*[j.position for j in list_shoulder])
+        x, y, z = zip(*[j.worldPosition for j in list_shoulder])
         self.centroid = (sum(x) / len(list_shoulder), sum(y) / len(list_shoulder), sum(z) / len(list_shoulder))
 
     def calc_corrections(self):

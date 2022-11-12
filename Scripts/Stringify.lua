@@ -1,35 +1,44 @@
 function stringify(main)
 	shape = main.interactable.shape
 	body = main.interactable:getBody()
-	ang = shape:getWorldRotation()
+	rot = shape:getWorldRotation()
 	pos = body:getWorldPosition()
 	vel = shape:getVelocity()
 	mass = body:getMass()
+	print(shape.up)
 
-    print(body.centerOfMassPosition)
+--     print(body.centerOfMassPosition)
 	out_table = {
-		ang = VectToString(ang),
+		rot = QuatToString(rot),
 		pos = VectToString(pos),	
 		vel = VectToString(vel),
 		mass_center = VectToString(body.centerOfMassPosition),
 		mass = mass,
+		shape = shapeToString(shape)
 	}
     
     out_table.joints = {}
 
     for index, joint in ipairs(body:getJoints()) do
---         joint = body:getJoints()[1]
-        first_joint = joint
-        joint_dico = {}
-        pointer = joint_dico
-        while true do
-            if joint == nil then break end
-            if joint.shapeB == nil then break end
-            sub_dico = {}
-            sub_dico[joint.id] = jointToJsonTable(joint)
-            pointer.joints = sub_dico
-            pointer = sub_dico[joint.id]
-            joint = joint.shapeB.body:getJoints()[1]
+        print(joint.type)
+        if joint.type == 'bearing' then
+
+    --         joint = body:getJoints()[1]
+            first_joint = joint
+            joint_dico = {}
+            pointer = joint_dico
+            while true do
+                if joint == nil then break end
+                sub_dico = {}
+                sub_dico[joint.id] = jointToJsonTable(joint)
+                pointer.joints = sub_dico
+                pointer = sub_dico[joint.id]
+                if joint.shapeB ~= nil then
+                    joint = joint.shapeB.body:getJoints()[1]
+                else
+                    joint = nil
+                end
+            end
         end
 --         print(joint_dico.joints)
 --         print(first_joint.id)
@@ -46,20 +55,30 @@ function jointToJsonTable(joint)
         localPosition = VectToString(joint.localPosition),
         localRotation = QuatToString(joint.localRotation),
         position = VectToString(joint.worldPosition),
+        rotation = QuatToString(joint:getWorldRotation()),
         xAxis = VectToString(joint.xAxis),
         yAxis = VectToString(joint.yAxis),
         zAxis = VectToString(joint.zAxis),
     }
+--     print(joint:getWorldRotation() * joint.worldPosition)
+--     print(joint.localRotation * joint.localPosition)
     if joint.shapeB ~= nil then
         if joint.shapeB.material == "Wood" then
-            print(joint.shapeB.body.centerOfMassPosition)
+--             print(joint.shapeB.body.centerOfMassPosition)
 --             print(joint.shapeB.body.worldPosition)
         end
-        jointJson.shapeB = {
-            pos = VectToString(joint.shapeB.body.centerOfMassPosition)
-        }
+        jointJson.shapeB = shapeToString(joint.shapeB)
     end
     return jointJson
+end
+
+function shapeToString(shape)
+   return {
+        pos = VectToString(shape.body.centerOfMassPosition),
+        rot = QuatToString(shape.worldRotation),
+        at = VectToString(shape.at),
+        up = VectToString(shape.up),
+    }
 end
 
 function QuatToString(quaternion)

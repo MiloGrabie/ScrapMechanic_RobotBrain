@@ -59,7 +59,7 @@ function read(self, deltaTime)
 	
 	sm.json.save(sm.json.writeJsonString(stringify(self)), "$MOD_DATA/Scripts/JSON/interface_out.json")
 
-    print(input.disarm)
+--     print(input.disarm)
 	if input.disarm ~= nil and input.disarm == true then
 	    for _, joint in ipairs(self.interactable:getBearings()) do
 	        sm.joint.setTargetAngle(joint, 0, 1, 1)

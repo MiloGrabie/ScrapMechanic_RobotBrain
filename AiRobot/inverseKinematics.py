@@ -16,18 +16,27 @@ class InverseKinematics:
         actuator_parameter = []
         for index, joint in enumerate(arm.joints):
             if index == len(arm.joints)-1: break
-            if index == 0: actuator_parameter.append('z')
-            else: actuator_parameter.append('x')
+            actuator_parameter.append(self.getAxisLetter(joint.direction))
+            # if index == 0:
+            #     actuator_parameter.append('z')
+            # else:
+            #     actuator_parameter.append('x')
             actuator_parameter.append(joint.length)
-        actuator_parameter.insert(0, [0,0,-1])
+        # actuator_parameter.insert(0, [0,0,-1])
         self.actuator = tinyik.Actuator(actuator_parameter)
 
     def getAngle(self, objective):
         self.actuator.ee = objective
-        tinyik.visualize(self.actuator)
+        # tinyik.visualize(self.actuator)
         # return self.actuator.angles
-        print("deg", self.actuator.angles)
+        # print("deg", self.actuator.angles)
         return self.actuator.angles
+
+    def getAxisLetter(self, vect):
+        if vect == [1, 0, 0]: return "x"
+        if vect == [0, 1, 0]: return "y"
+        if vect == [0, 0, 1]: return "z"
+
 
 
 def calc(length_first, length_second, length_third):
