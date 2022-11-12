@@ -19,7 +19,8 @@ class Arm:
 
     def init_kinematics(self):
         #self.calcCorrection()
-        self.inverseKinematics = InverseKinematics(self)
+        if len(self.joints) > 1:
+            self.inverseKinematics = InverseKinematics(self)
 
     def init_joints(self):
         joint = self.first_joint

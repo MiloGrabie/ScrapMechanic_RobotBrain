@@ -4,12 +4,13 @@ from shapely import geometry
 
 
 from AiRobot.utils.toolbox import getFarthestPoint
+from parts.brain import Brain
 
 
-class Brain_ML:
+class Brain_ML(Brain):
 
     def __init__(self, body):
-        self.body = body
+        super().__init__(body)
 
     def move(self, direction):
         for arm in self.body.arms:

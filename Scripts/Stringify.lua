@@ -5,7 +5,7 @@ function stringify(main)
 	pos = body:getWorldPosition()
 	vel = shape:getVelocity()
 	mass = body:getMass()
-	print(shape.up)
+-- 	print(shape.up)
 
 --     print(body.centerOfMassPosition)
 	out_table = {
@@ -49,19 +49,25 @@ function stringify(main)
 end
 
 function jointToJsonTable(joint)
+--     print(sm.joint.getWorldPosition(joint))
+--     print(joint:getWorldPosition())
+--     print(joint:getWorldRotation())
+--     print(joint.localRotation * sm.vec3.new(0,0,1))
     jointJson = {
         index =  joint.id,
         angle = joint.angle,
         localPosition = VectToString(joint.localPosition),
         localRotation = QuatToString(joint.localRotation),
-        position = VectToString(joint.worldPosition),
+        position = VectToString(joint:getWorldPosition()),
         rotation = QuatToString(joint:getWorldRotation()),
+        direction = VectToString(joint.localRotation * sm.vec3.new(0,0,1)),
         xAxis = VectToString(joint.xAxis),
         yAxis = VectToString(joint.yAxis),
         zAxis = VectToString(joint.zAxis),
     }
---     print(joint:getWorldRotation() * joint.worldPosition)
---     print(joint.localRotation * joint.localPosition)
+--     print(joint.id)
+--     print(joint.localRotation * sm.vec3.new(0,0,1))
+
     if joint.shapeB ~= nil then
         if joint.shapeB.material == "Wood" then
 --             print(joint.shapeB.body.centerOfMassPosition)

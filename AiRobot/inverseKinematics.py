@@ -10,7 +10,6 @@ value = [3, 3, -5]
 
 
 class InverseKinematics:
-
     actuator_list = []
 
     def __init__(self, arm):
@@ -28,36 +27,37 @@ class InverseKinematics:
         # # actuator_parameter.insert(0, [0,0,-1])
         # self.actuator = tinyik.Actuator(actuator_parameter)
 
-        links = []
-        links.append(
+        links = [
             URDFLink(
                 name="origin",
-                origin_translation=array([0,0,0]),
+                origin_translation=array([0, 0, 0]),
                 origin_orientation=array([0, 0, 0]),
                 rotation=arm.first_joint.direction,
             )
-        )
+        ]
         for index, joint in enumerate(arm.joints):
-            if index == len(arm.joints)-1:
-                links.append(
-                    URDFLink(
-                        name=joint.index,
-                        origin_translation=array([0,0,0]),
-                        origin_orientation=array([0, 0, 0]),
-                        rotation=joint.direction,
-                    )
+            if index == len(arm.joints) - 1:  # last one
+                # links.append(
+                #     URDFLink(
+                #         name=joint.index,
+                #         origin_translation=array([0, 0, 0]),
+                #         origin_orientation=array([0, 0, 0]),
+                #         rotation=array([0, 0, 0]),
+                #     )
+                # )
+                break
+
+            links.append(
+                URDFLink(
+                    name=joint.index,
+                    origin_translation=joint.length,
+                    origin_orientation=array([0, 0, 0]),
+                    rotation=arm.joints[index + 1].direction,
                 )
-            else:
-                links.append(
-                    URDFLink(
-                        name=joint.index,
-                        origin_translation=joint.length,
-                        origin_orientation=array([0, 0, 0]),
-                        rotation=arm.joints[index+1].direction,
-                    )
-                )
+            )
 
         self.actuator = Chain(name='left_arm', links=links)
+        # self.actuator = Chain(name='left_arm', links=links, active_links_mask=[True, True, True, False])
 
     def getAngle(self, objective):
         # self.actuator.inverse_kinematics(objective)
@@ -74,7 +74,6 @@ class InverseKinematics:
         if vect == [0, 0, 1]: return "z"
 
 
-
 def calc(length_first, length_second, length_third):
     arm = tinyik.Actuator(['z', length_first, 'x', length_second, 'x', length_third])
     # arm.angles = [pi, 1]
@@ -87,6 +86,7 @@ def calc(length_first, length_second, length_third):
     # leg = tinyik.Actuator([[.3, .0, .0], 'z', [.3, .0, .0], 'x', [.0, -.5, .0], 'x', [.0, -.5, .0]])
     # leg.angles = np.deg2rad([30, 45, -90])
     # tinyik.visualize(leg)
+
 
 if __name__ == '__main__':
     pass

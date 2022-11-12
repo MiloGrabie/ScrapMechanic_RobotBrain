@@ -26,8 +26,8 @@ class Joint(Part):
         self.zAxis = vectorize(part.zAxis)
         self.worldPosition = vectorize(part.position)
         self.worldRotation = vectorize_quat(part.rotation)
-        self.direction = self.getDirection()
-        self.angularVelocity = 1.5
+        self.direction = -vectorize(part.direction)
+        self.angularVelocity = 0.5
         self.maxImpulse = 350
         self.joints = []
         self.getChildJoint(part)
@@ -40,9 +40,9 @@ class Joint(Part):
         self.length = 0
         if 'joints' in part:
             for joint in part.joints:
-                local_joint = Joint(self.context, joint)
-                self.joints.append(local_joint)
-                self.length = (local_joint.localPosition - self.localPosition)/4
+                next_joint = Joint(self.context, joint)
+                self.joints.append(next_joint)
+                self.length = (next_joint.localPosition - self.localPosition)/4
                 # self.length = (self.localPosition-local_joint.localPosition)/4
                 # self.length = local_joint.worldPosition - self.worldPosition
 
@@ -52,6 +52,7 @@ class Joint(Part):
         self.localPosition = vectorize(part.localPosition)
         self.worldPosition = vectorize(part.position)
         self.worldRotation = vectorize_quat(part.rotation)
+        # self.direction = vectorize(part.direction)
         if 'joints' in part:
             for input_joint in part.joints:
                 [joint.refresh_data(input_joint) for joint in self.joints if joint.index == input_joint.index]
@@ -69,13 +70,4 @@ class Joint(Part):
             "maxImpulse": self.maxImpulse,
         }
         self.context.registerAction(Actions.setTargetAngle, action)
-
-    def getDirection(self):
-        return self.zAxis
-        indexes = [(1, 2, 0), (0, 2, 1), (0, 1, 2)]
-        return_data = [0, 0, 0]
-        for i, index in enumerate(indexes):
-            if sum([abs(self.xAxis[index[0]]), abs(self.yAxis[index[1]]), abs(self.zAxis[index[2]])]) == 3:
-                return_data[i] = 1
-                return return_data
 

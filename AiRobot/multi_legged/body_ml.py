@@ -1,7 +1,7 @@
 from numpy.linalg import norm
 
 from AiRobot.multi_legged.arm_ml import Arm_ML
-from AiRobot.multi_legged.brain_ML import Brain_ML
+from AiRobot.multi_legged.brain_ml import Brain_ML
 from AiRobot.parts.body import Body
 from AiRobot.parts.joint import Joint
 

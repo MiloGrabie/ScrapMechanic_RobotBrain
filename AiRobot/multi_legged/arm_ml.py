@@ -12,7 +12,7 @@ class Arm_ML(Arm):
         joint = self.first_joint
         center_x, center_y = self.body.centroid[0], self.body.centroid[1]
         x, y = joint.worldPosition[0], joint.worldPosition[1]
-        correction = [1, 1 if y > center_y else -1, -1 if x < center_x else 1]
+        correction = [1, 1 if y > center_y else -1, 1]
         self.position_correction = correction
 
     def move(self, objective=None):
