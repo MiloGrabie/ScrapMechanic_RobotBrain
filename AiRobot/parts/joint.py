@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import array
 
 from parts.part import Part
@@ -16,8 +17,8 @@ class Joint(Part):
         self.length = None
         self.context = context
         self.index = part.index
-        self.targetAngle = None
         self.angle = part.angle
+        self.targetAngle = 0
         self.localRotation = vectorize_quat(part.localRotation)
         self.localPosition = vectorize(part.localPosition)
         self.xAxis = vectorize(part.xAxis)
@@ -63,13 +64,14 @@ class Joint(Part):
     def move(self):
         action = {
             "index": self.index,
-            "targetAngle": self.angle,
+            "targetAngle": np.round(self.targetAngle, 3),
             "angularVelocity": self.angularVelocity,
             "maxImpulse": self.maxImpulse,
         }
         self.context.registerAction(Actions.setTargetAngle, action)
 
     def getDirection(self):
+        return self.zAxis
         indexes = [(1, 2, 0), (0, 2, 1), (0, 1, 2)]
         return_data = [0, 0, 0]
         for i, index in enumerate(indexes):

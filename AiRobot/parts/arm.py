@@ -13,6 +13,7 @@ class Arm:
         self.end_joint = self.init_end_joint()
         self.body = body
         self.joints = self.init_joints()
+        self.angles = array([0] * len(self.joints))
         #self.position_correction = [1, 1, 1]  # relative position correction
         self.max_length = sum([norm(j.length) for j in self.joints])
 
@@ -42,10 +43,10 @@ class Arm:
     def move(self, objective=None):
         if objective is not None:
             self.objective = objective
-        angles = self.inverseKinematics.getAngle(self.objective)
-        for index, angle in enumerate(angles):
-            self.joints[index].angle = angle
-            self.joints[index].move()
+        self.angles = self.inverseKinematics.getAngle(self.objective)
+        for index, joint in enumerate(self.joints):
+            joint.targetAngle = self.angles[index]
+            joint.move()
 
     @property
     def default(self):

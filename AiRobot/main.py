@@ -26,16 +26,16 @@ class Main:
     def run(self):
         self.context.refresh()
         self.context.clearAction()
-        # time.sleep(2)
-        value = [-1.5, 0, 1]
-        value = [1, 0, 1]
-        value[0],value[1]=value[1],value[0]
+        time.sleep(1)
+        # value = [-1.5, 0, -1]
+        value = [1, 1, 0]
+        # value[0],value[1]=value[1],value[0]
         #
         # value[0] += 0
         # value[1] += 0.75
         # value[2] += -0.25
 
-
+        print([j.direction for j in self.body.arms[0].joints])
         # for joint in self.body.arms[0].joints:
         #     joint.angle = 0
         #     joint.maxImpulse = 500
@@ -48,7 +48,7 @@ class Main:
             self.body.refresh()
             # value[0] -= 0.1
             # value[1] -= 0.1
-            # value[2] -= 0.1
+            # value[2] += 0.1
             # joint = self.body.joints[1]
             # r = R.from_quat(joint.localRotation)
             # print(joint.localRotation)
@@ -59,6 +59,7 @@ class Main:
             for arm in self.body.arms:
                 for joint in arm.joints:
                     print(f"wp : {np.around(joint.worldPosition,2)} lp: {joint.localPosition} jl: {joint.length} jDir: {joint.direction}")
+                    # print(f"angle envoye : {joint.targetAngle} angle recu: {joint.angle}")
             # print("default", arm.shoulder_pos - arm.foot_pos)
             # print([norm(j.length) for j in arm.joints])
             # print([j.length for j in arm.joints])

@@ -54,23 +54,28 @@ class PlotRobot:
         #
         # self.scatter3D([35, -25.25, 1.5])
 
-        for arm in self.body.arms:
-            points = [joint.position for joint in arm.joints]
-            # [self.scatter3D(joint.position) for joint in arm.joints]
-            print(points)
-            self.plot3D(points)
+        # for arm in self.body.arms:
+        #     points = [joint.position for joint in arm.joints]
+        #     # [self.scatter3D(joint.position) for joint in arm.joints]
+        #     print(points)
+        #     self.plot3D(points)
             # points = [joint. for joint in arm.joints]
             # self.plot3D(points)
 
-        points = []
-        points.append(self.body.arms[0].joints[0].position)
-        for i, j in enumerate(self.body.arms[0].joints):
-            p = points[-1] + j.length
-            points.append(p)
-            self.scatter3D(p)
+        # points = []
+        # points.append(self.body.arms[0].joints[0].position)
+        # points.append([0,0,0])
+        # for i, j in enumerate(self.body.arms[0].joints):
+        #     p = points[-1] + j.length
+        #     points.append(p)
+        #     self.scatter3D(p)
         # points = [j.position + j.length for j in self.body.arms[0].joints]
         # points.insert(0, self.body.arms[0].joints[0].position)
-        self.plot3D(points)
+        # self.plot3D(points)
+
+        # self.body.arms[0].inverseKinematics.actuator.plot(self.body.arms[0].angles, self.ax)
+        # self.body.arms[0].inverseKinematics.actuator.plot([j.targetAngle for j in self.body.arms[0].joints], self.ax)
+        self.body.arms[0].inverseKinematics.actuator.plot([*[j.angle for j in self.body.arms[0].joints], 0], self.ax)
 
         # self.scatter3D(self.body.joints[-1].localPosition)
         # points = [arm.first_joint.position for arm in self.body.arms]

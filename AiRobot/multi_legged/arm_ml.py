@@ -21,5 +21,5 @@ class Arm_ML(Arm):
         angles = self.inverseKinematics.getAngle(self.objective * self.position_correction)
         # angles = self.inverseKinematics.getAngle(self.objective)
         for index, angle in enumerate(angles):
-            self.joints[index].angle = angle
+            self.joints[index].targetAngle = angle
             self.joints[index].move()
