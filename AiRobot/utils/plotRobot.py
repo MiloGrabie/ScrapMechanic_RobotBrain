@@ -30,12 +30,12 @@ class PlotRobot:
     def refresh_plot(self):
         self.ax.cla()
 
-        # print()
-        # for index, j in enumerate(self.body.joints):
-        #     self.scatter3D(j.position)
-        #     self.plot3D([j.position, j.position + j.direction])
-
-        # self.plot3D([j.position for j in arm.joints])
+        for arm in self.body.arms:
+            self.scatter3D(arm.foot_pos + arm.default * self.body.direction)
+            self.scatter3D(arm.foot_pos)
+            # self.plot3D([j.position for j in arm.joints])
+        print("centroid", self.body.direction)
+        self.plot3D([self.body.centroid, self.body.centroid + self.body.direction])
         self.rpz_robot()
 
         plt.draw()

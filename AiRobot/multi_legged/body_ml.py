@@ -24,6 +24,10 @@ class Body_ML(Body):
 
         self.calcSibling()
 
+    def refresh(self):
+        super().refresh()
+        self.calcCentroid()
+
     def calcSibling(self):
         for arm in self.arms:
             pos_list = [[norm(arm.first_joint.worldPosition - arm_local.first_joint.worldPosition), arm_local] for arm_local in

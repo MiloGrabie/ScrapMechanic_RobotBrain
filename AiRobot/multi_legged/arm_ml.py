@@ -23,3 +23,7 @@ class Arm_ML(Arm):
         for index, angle in enumerate(angles):
             self.joints[index].targetAngle = angle
             self.joints[index].move()
+
+    @property
+    def default(self):
+        return (self.shoulder_pos + self.objective) - self.foot_pos

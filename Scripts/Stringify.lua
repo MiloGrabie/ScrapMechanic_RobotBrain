@@ -10,7 +10,9 @@ function stringify(main)
 --     print(body.centerOfMassPosition)
 	out_table = {
 		rot = QuatToString(rot),
-		pos = VectToString(pos),	
+		pos = VectToString(pos),
+-- 		dir = VectToString(rot * sm.vec3.new(0,0,1)),
+		dir = VectToString(-shape.right),
 		vel = VectToString(vel),
 		mass_center = VectToString(body.centerOfMassPosition),
 		mass = mass,

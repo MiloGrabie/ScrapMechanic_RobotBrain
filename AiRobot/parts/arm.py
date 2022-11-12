@@ -51,8 +51,7 @@ class Arm:
 
     @property
     def default(self):
-        return self.first_joint.worldPosition - array([0, 0, 5])
-        # return self.first_joint.position + array([0, 0, 5])
+        return (self.shoulder_pos + self.objective) - self.foot_pos
 
     @property
     def shoulder_pos(self):

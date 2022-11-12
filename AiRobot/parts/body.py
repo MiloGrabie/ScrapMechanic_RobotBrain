@@ -22,7 +22,7 @@ class Body:
         self.init_kinematics()
         self.pos = vectorize(self.context.data.pos)
         self.rot = vectorize_quat(self.context.data.rot)
-        self.direction = array(R.from_quat(self.rot).as_rotvec())
+        self.direction = vectorize(self.context.data.dir)
         self.shape = Shape(self.context.data.shape)
         self.gravity_center = None
         self.setBrain()
@@ -37,6 +37,7 @@ class Body:
 
         self.pos = vectorize(self.context.data.pos)
         self.gravity_center = vectorize(self.context.data.mass_center)
+        self.direction = vectorize(self.context.data.dir)
         self.shape.refresh(self.context.data.shape)
 
     def init_joints(self):

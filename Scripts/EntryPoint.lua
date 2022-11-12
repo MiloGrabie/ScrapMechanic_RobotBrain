@@ -77,4 +77,6 @@ function read(self, deltaTime)
 			end
 		end
 	end
+
+    self.interactable.active = outputs
 end
