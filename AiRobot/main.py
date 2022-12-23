@@ -1,6 +1,7 @@
 import json
 import re
 
+from numpy import array
 from numpy.linalg import norm
 
 from context import Context
@@ -12,6 +13,7 @@ from math import pi
 from scipy.spatial.transform import Rotation as R
 
 from utils.plotRobot import PlotRobot
+from utils.xbox_controller import XboxController
 
 
 class Main:
@@ -21,15 +23,16 @@ class Main:
         self.context = Context()
         self.body = None
         self.init_object()
-        self.plotRobot = PlotRobot(self.context, self.body)
+        # self.plotRobot = PlotRobot(self.context, self.body)
+        self.xbox_controller = XboxController()
         self.run()
 
     def init_object(self):
-        self.body = Body_ML(self.context)
+        self.body = Body(self.context)
 
     def run(self):
         self.context.refresh()
-        self.plotRobot.refresh_plot()
+        # self.plotRobot.refresh_plot()
         # self.context.clearAction()
         # time.sleep(1)
         # value = [-1.5, 0, -1]
@@ -46,7 +49,7 @@ class Main:
         while True:
             self.context.refresh()
             self.body.refresh()
-            self.plotRobot.refresh_plot()
+            # self.plotRobot.refresh_plot()
 
             # value[0] -= 0.01
             # value[1] += 0.01
@@ -54,7 +57,16 @@ class Main:
 
             # self.body.brain.move([1, 1, 1])
 
-            print(self.body.arms[0].default)
+            arm = self.body.arms[0]
+
+            delta = array([self.xbox_controller.LeftJoystickY, -self.xbox_controller.LeftJoystickX, self.xbox_controller.RightJoystickY])
+            delta = np.round(delta, 1)
+            print(delta)
+            value += delta / 10
+            objective = np.array(value)
+            arm.move(objective)
+
+            # print(self.body.arms[0].default)
             # if cycle % 80 == 0:
             #     value = [-0.75, 0.25, -1.5]
             #     objective = np.array(value)
@@ -64,7 +76,7 @@ class Main:
             #     objective = np.array(value)
             #     self.body.brain.setArms(objective)
             # self.body.brain.doMagic()
-            self.body.brain.move([1,0])
+            # self.body.brain.move([1,0])
             cycle += 1
             time.sleep(0.1)
 

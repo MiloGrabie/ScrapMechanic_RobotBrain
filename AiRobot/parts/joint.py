@@ -27,8 +27,8 @@ class Joint(Part):
         self.worldPosition = vectorize(part.position)
         self.worldRotation = vectorize_quat(part.rotation)
         self.direction = -vectorize(part.direction)
-        self.angularVelocity = 0.5
-        self.maxImpulse = 350
+        self.angularVelocity = 10
+        self.maxImpulse = 5000
         self.joints = []
         self.getChildJoint(part)
 
