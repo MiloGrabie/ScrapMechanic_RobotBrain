@@ -1,0 +1,11 @@
+numpy~=1.21.6
+typing~=3.7.4.3
+attrs~=22.1.0
+scipy~=1.7.3
+matplotlib~=3.5.3
+setuptools~=65.5.1
+Shapely~=1.8.5.post1
+inputs~=0.5
+munch~=2.5.0
+tinyik~=2.2.1
+ikpy~=3.3.3
