@@ -15,6 +15,7 @@ from numpy import array
 from context import Context
 from multi_legged.body_ml import Body_ML
 from parts.body import Body
+from training.URDF_Interface import URDF_Interface
 from utils.plotRobot import PlotRobot
 
 
@@ -34,6 +35,7 @@ class MainPlot:
         self.context = Context(read_only=True)
         self.body = Body(self.context)
         self.plotRobot = PlotRobot(self.context, self.body)
+        self.URDF_Interface = URDF_Interface(self.body)
         self.run()
 
     def run(self):

@@ -48,6 +48,8 @@
       <limit lower="-3.14" upper="3.14" effort="100.0" velocity="1.0"/>
     </joint>
   </link>
-  <link name="left_front_leg_reararm">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+
+</robot>
+<!--  <link name="left_front_leg_reararm">-->
+<!--    <inertial>-->
+<!--      <origin xyz="0 0 0" rpy="0 0 0"/>-->

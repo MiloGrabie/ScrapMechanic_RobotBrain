@@ -35,8 +35,8 @@ class PlotRobot:
             self.scatter3D(arm.foot_pos)
             # self.plot3D([j.position for j in arm.joints])
         print("centroid", self.body.direction)
-        self.plot3D([self.body.centroid, self.body.centroid + self.body.direction])
-        self.rpz_robot()
+        # self.plot3D([self.body.centroid, self.body.centroid + self.body.direction])
+        # self.rpz_robot()
 
         plt.draw()
         plt.pause(0.00001)

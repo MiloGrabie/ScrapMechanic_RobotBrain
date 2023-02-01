@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<robot name="myworkcell" xmlns:xacro="http://ros.org/wiki/xacro">
+    <link name="world"/>
+    <link name="table">
+        <visual>
+            <geometry>
+                <box size="1.0 1.0 0.05"/>
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="1.0 1.0 0.05"/>
+            </geometry>
+        </collision>
+    </link>
+<!--    <link name="camera_frame"/>-->
+    <joint name="world_to_table" type="fixed">
+        <parent link="world"/>
+        <child link="table"/>
+        <origin xyz="0 0 0.5" rpy="0 0 0"/>
+    </joint>
+<!--    <joint name="world_to_camera" type="fixed">-->
+<!--        <parent link="world"/>-->
+<!--        <child link="camera_frame"/>-->
+<!--        <origin xyz="-0.25 -0.5 1.25" rpy="3.14 3.14159 0"/>-->
+<!--    </joint>-->
+
+    <link name="base">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="10.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="10 4 0.1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="10 4 .1"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="table_to_base" type="fixed">
+        <parent link="table"/>
+        <child link="base"/>
+        <origin xyz="0 0 0.5" rpy="0 0 0"/>
+    </joint>
+
+    <link name="left_front_leg_seg1">
+        <inertial>
+            <origin xyz="5 3 0" rpy="0 0 0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <origin xyz="5 3 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 2 .1"/>
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="5 3 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 2 .1"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="left_front_leg_shoulder" type="revolute">
+        <parent link="base"/>
+        <child link="left_front_leg_seg1"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.14" upper="3.14" effort="100.0" velocity="1.0"/>
+    </joint>
+
+</robot>

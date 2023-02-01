@@ -6,6 +6,8 @@ from utils.actions import Actions
 
 class Context:
 
+    root_path = r"C:\Users\Milo\AppData\Roaming\Axolot Games\Scrap " \
+                r"Mechanic\User\User_76561198130980987\Mods\Robot_Brain"
     path = r"C:\Users\Milo\AppData\Roaming\Axolot Games\Scrap " \
            r"Mechanic\User\User_76561198130980987\Mods\Robot_Brain\Scripts\JSON"
     input_file = path + r"\interface_out.json"
