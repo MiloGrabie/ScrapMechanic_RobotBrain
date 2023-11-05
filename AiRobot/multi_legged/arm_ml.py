@@ -1,5 +1,5 @@
 
-from AiRobot.parts.arm import Arm
+from parts.arm import Arm
 
 
 class Arm_ML(Arm):

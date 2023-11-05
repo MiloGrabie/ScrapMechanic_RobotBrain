@@ -1,6 +1,6 @@
 from numpy import array
 
-from AiRobot.utils.toolbox import vectorize, vectorize_quat
+from utils.toolbox import vectorize, vectorize_quat
 
 from scipy.spatial.transform import Rotation as R
 

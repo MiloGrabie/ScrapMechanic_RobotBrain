@@ -3,7 +3,7 @@ from numpy.linalg import norm
 from shapely import geometry
 
 
-from AiRobot.utils.toolbox import getFarthestPoint
+from utils.toolbox import getFarthestPoint
 from parts.brain import Brain
 
 

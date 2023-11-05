@@ -1,10 +1,10 @@
 from numpy import array
 from numpy.linalg import norm
 
-from AiRobot.parts.arm import Arm
-from AiRobot.parts.brain import Brain
-from AiRobot.parts.joint import Joint
-from AiRobot.utils.toolbox import vectorize, vectorize_quat
+from parts.arm import Arm
+from parts.brain import Brain
+from parts.joint import Joint
+from utils.toolbox import vectorize, vectorize_quat
 from scipy.spatial.transform import Rotation as R
 
 from parts.shape import Shape
@@ -34,6 +34,9 @@ class Body:
         if self.context.data.joints is not None:
             for input_joint in self.context.data.joints:
                 [arm.refreshData(input_joint) for arm in self.arms if arm.first_joint.index == input_joint.index]
+
+        for arm in self.arms:
+            [joint.updateRelativePosition(self.pos) for joint in arm.joints]
 
         self.pos = vectorize(self.context.data.pos)
         self.gravity_center = vectorize(self.context.data.mass_center)

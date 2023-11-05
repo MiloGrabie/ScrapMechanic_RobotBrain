@@ -1,7 +1,7 @@
 from numpy import array
 from numpy.linalg import norm
 
-from AiRobot.inverseKinematics import InverseKinematics
+from inverseKinematics import InverseKinematics
 
 
 class Arm:

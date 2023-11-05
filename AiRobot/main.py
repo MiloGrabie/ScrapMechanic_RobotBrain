@@ -5,6 +5,7 @@ from numpy import array
 from numpy.linalg import norm
 
 from context import Context
+from dog_motion.dog_body import DogBody
 from parts.body import Body
 import time
 import numpy as np
@@ -13,7 +14,6 @@ from math import pi
 from scipy.spatial.transform import Rotation as R
 
 from utils.plotRobot import PlotRobot
-from utils.xbox_controller import XboxController
 
 
 class Main:
@@ -24,11 +24,10 @@ class Main:
         self.body = None
         self.init_object()
         # self.plotRobot = PlotRobot(self.context, self.body)
-        self.xbox_controller = XboxController()
         self.run()
 
     def init_object(self):
-        self.body = Body(self.context)
+        self.body = DogBody(self.context)
 
     def run(self):
         self.context.refresh()
@@ -51,6 +50,8 @@ class Main:
             self.body.refresh()
             # self.plotRobot.refresh_plot()
 
+            self.body.brain.forward()
+
             # value[0] -= 0.01
             # value[1] += 0.01
             # value[1] += 0.01
@@ -58,13 +59,6 @@ class Main:
             # self.body.brain.move([1, 1, 1])
 
             arm = self.body.arms[0]
-
-            delta = array([self.xbox_controller.LeftJoystickY, -self.xbox_controller.LeftJoystickX, self.xbox_controller.RightJoystickY])
-            delta = np.round(delta, 1)
-            print(delta)
-            value += delta / 10
-            objective = np.array(value)
-            arm.move(objective)
 
             # print(self.body.arms[0].default)
             # if cycle % 80 == 0:

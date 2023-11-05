@@ -33,7 +33,7 @@ class MainPlot:
     def __init__(self):
         self.ax = None
         self.context = Context(read_only=True)
-        self.body = Body(self.context)
+        self.body = Body_ML(self.context)
         self.plotRobot = PlotRobot(self.context, self.body)
         self.URDF_Interface = URDF_Interface(self.body)
         self.run()

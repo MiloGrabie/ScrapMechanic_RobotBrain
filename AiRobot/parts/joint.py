@@ -6,7 +6,7 @@ from parts.part import Part
 from utils.actions import Actions
 from utils.toolbox import vectorize, vectorize_quat
 
-from AiRobot.parts.shape import Shape
+from parts.shape import Shape
 from scipy.spatial.transform import Rotation as R
 
 
@@ -21,6 +21,7 @@ class Joint(Part):
         self.targetAngle = 0
         self.localRotation = vectorize_quat(part.localRotation)
         self.localPosition = vectorize(part.localPosition)
+        self.relativePosition = None
         self.xAxis = vectorize(part.xAxis)
         self.yAxis = vectorize(part.yAxis)
         self.zAxis = vectorize(part.zAxis)
@@ -31,6 +32,9 @@ class Joint(Part):
         self.maxImpulse = 5000
         self.joints = []
         self.getChildJoint(part)
+
+    def updateRelativePosition(self, body_position):
+        self.relativePosition = self.position - body_position
 
     @property
     def position(self):
