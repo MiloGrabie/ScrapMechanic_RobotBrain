@@ -10,7 +10,7 @@ class Context:
     #             r"Mechanic\User\User_76561198130980987\Mods\Robot_Brain"
     # path = r"C:\Users\Milo\AppData\Roaming\Axolot Games\Scrap " \
     #        r"Mechanic\User\User_76561198130980987\Mods\Robot_Brain\Scripts\JSON"
-    root_path = "../"
+    root_path = "./"
     path = root_path + r"\Scripts\JSON"
     input_file = path + r"\interface_out.json"
     output_file = path + r"\interface_in.json"

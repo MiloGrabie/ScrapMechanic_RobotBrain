@@ -22,7 +22,7 @@ function stringify(main)
     out_table.joints = {}
 
     for index, joint in ipairs(body:getJoints()) do
-        print(joint.type)
+        -- print(joint.type)
         if joint.type == 'bearing' then
 
     --         joint = body:getJoints()[1]
@@ -47,7 +47,20 @@ function stringify(main)
         out_table.joints[first_joint.id] = joint_dico.joints[first_joint.id]
 --         print(out_table)
     end
+
+    out_table.raycats = perform_raycasts()
+
 	return out_table
+end
+
+function perform_raycasts()
+    
+    raycasts = {}
+	valid, raycast = sm.physics.raycast(shape:getWorldPosition(), shape.up, body)
+    
+    table.insert(raycasts, raycast.pointWorld)
+
+    return raycasts
 end
 
 function jointToJsonTable(joint)

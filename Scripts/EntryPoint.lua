@@ -19,6 +19,19 @@ function main_class.client_onRefresh( self )
 end
 
 function main_class.client_onUpdate( self, deltaTime )
+
+	-- print(sm.localPlayer.getDirection())
+	-- try {
+	-- 	function()
+	-- 		print(sm.localPlayer.getRaycast(1000))
+	-- 		print()
+	-- 	end,
+    --     catch {
+    --         function(error)
+    --             print('caught error: ' .. error)
+    --         end
+    --     }
+	-- }
 end
 
 --[[ server ]]
@@ -58,6 +71,12 @@ function read(self, deltaTime)
 	input = read_input()
 	
 	sm.json.save(sm.json.writeJsonString(stringify(self)), "$MOD_DATA/Scripts/JSON/interface_out.json")
+
+	-- print(shape:getWorldPosition())
+	-- print(sm.physics.multicast({ "sphere", shape:getWorldPosition(), radius=20 }))
+	-- print(sm.physics.multicast({type="sphere"}))
+	vec = sm.vec3.new(-204.735, 90, -31)
+	-- print(sm.physics.raycast(shape:getWorldPosition(), shape.up, body))
 
 --     print(input.disarm)
 	if input.disarm ~= nil and input.disarm == true then
