@@ -34,15 +34,12 @@ class MainPlotRay:
     def __init__(self):
         self.ax = None
         self.context = Context(read_only=True)
-        self.body = Body_ML(self.context)
-        self.plotRobot = PlotRobotRay(self.context, self.body)
-        self.URDF_Interface = URDF_Interface(self.body)
+        self.plotRobot = PlotRobotRay(self.context)
         self.run()
 
     def run(self):
         while True:
             self.context.refresh()
-            self.body.refresh()
             self.plotRobot.refresh_plot()
 
 

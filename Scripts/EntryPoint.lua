@@ -75,7 +75,7 @@ function read(self, deltaTime)
 	-- print(shape:getWorldPosition())
 	-- print(sm.physics.multicast({ "sphere", shape:getWorldPosition(), radius=20 }))
 	-- print(sm.physics.multicast({type="sphere"}))
-	vec = sm.vec3.new(-204.735, 90, -31)
+	-- vec = sm.vec3.new(-204.735, 90, -31)
 	-- print(sm.physics.raycast(shape:getWorldPosition(), shape.up, body))
 
 --     print(input.disarm)

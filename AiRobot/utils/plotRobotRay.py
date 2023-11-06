@@ -9,6 +9,7 @@ from scipy.spatial.transform import Rotation as R
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import array
+from utils.toolbox import vectorize
 
 from context import Context
 from multi_legged.body_ml import Body_ML
@@ -16,10 +17,9 @@ from parts.body import Body
 
 class PlotRobotRay:
 
-    def __init__(self, context, body):
+    def __init__(self, context):
         self.ax = None
         self.context = context
-        self.body = body
         self.init_matplot()
 
     def init_matplot(self):
@@ -37,9 +37,14 @@ class PlotRobotRay:
         # print("centroid", self.body.direction)
         # self.plot3D([self.body.centroid, self.body.centroid + self.body.direction])
         # self.rpz_robot()
+        print(self.context.data.raycasts)
+
+        # self.plot3D([vectorize(point) for point in self.context.data.raycasts])
+        
+        [self.scatter3D(vectorize(point)) for point in self.context.data.raycasts]
 
         plt.draw()
-        plt.pause(0.00001)
+        plt.pause(10)
 
     def draw_length(self):
         arm = self.body.arms[0]
