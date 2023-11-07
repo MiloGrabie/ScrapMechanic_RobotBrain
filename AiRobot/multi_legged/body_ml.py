@@ -17,6 +17,7 @@ class Body_ML(Body):
         self.brain = Brain_ML(self)
 
     def init_joints(self):
+        if self.context.data.joints is None: return
         for parts in self.context.data.joints:
             joint = Joint(self.context, parts)
             self.arms.append(Arm_ML(joint, self))
@@ -36,6 +37,7 @@ class Body_ML(Body):
             arm.siblings = [tup[1] for tup in closest_arm]
 
     def calcCentroid(self):
+        if len(self.arms) == 0 : return
         list_shoulder = [arm.first_joint for arm in self.arms]
         x, y, z = zip(*[j.worldPosition for j in list_shoulder])
         self.centroid = (sum(x) / len(list_shoulder), sum(y) / len(list_shoulder), sum(z) / len(list_shoulder))
