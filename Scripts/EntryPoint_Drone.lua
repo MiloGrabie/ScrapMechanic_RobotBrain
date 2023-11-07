@@ -52,6 +52,7 @@ function read(self, deltaTime)
 	end
 
     print("loop")
+	print(self.interactable:getConnectionInputType())
 	shape = self.interactable.shape
 	body = self.interactable:getBody()
 -- 	print(shape.localPosition)
@@ -67,8 +68,6 @@ function read(self, deltaTime)
 	    return
     end
 
-	if input.
-
 	if input.setTargetAngle ~= nil then
 		for index, joint in ipairs(input.setTargetAngle) do
 -- 			print(joint.targetAngle, joint.angularVelocity, joint.maxImpulse)
@@ -79,6 +78,13 @@ function read(self, deltaTime)
 			end
 		end
 	end
+
+    if input.applyImpulse ~= nil then
+		for index, impulse in ipairs(input.applyImpulse) do
+			print(impulse.impulse_vector[1])
+			sm.physics.applyImpulse(body, tableToVec3(impulse.impulse_vector), true)
+		end
+    end
 
     self.interactable.active = outputs
 end

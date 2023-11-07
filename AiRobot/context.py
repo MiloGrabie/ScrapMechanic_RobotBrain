@@ -10,7 +10,7 @@ class Context:
     #             r"Mechanic\User\User_76561198130980987\Mods\Robot_Brain"
     # path = r"C:\Users\Milo\AppData\Roaming\Axolot Games\Scrap " \
     #        r"Mechanic\User\User_76561198130980987\Mods\Robot_Brain\Scripts\JSON"
-    root_path = "../"
+    root_path = "."
     path = root_path + r"\Scripts\JSON"
     input_file = path + r"\interface_out.json"
     output_file = path + r"\interface_in.json"
@@ -18,7 +18,16 @@ class Context:
     def __init__(self, read_only=False):
         self.read_only = read_only
         self.output = {}
+        self.acceleration = 0
+        self.old_dict = None
+        self.data_dict = None
         self.refresh()
+
+    def update_differential_data(self):
+        if self.old_dict is None: return
+        old_data = DefaultMunch.fromDict(self.old_dict)
+        self.acceleration = self.data.acceleration - old_data.acceleration
+        self.old_dict = self.data_dict
 
     def callback(self):
         if self.read_only: return
@@ -29,8 +38,9 @@ class Context:
             try:
                 str_data = f.read()
                 str_data = str_data[1:-2].replace('\\"', '"').replace("\\n", '')
-                data_dict = json.loads(str_data)
-                self.data = DefaultMunch.fromDict(data_dict)
+                self.data_dict = json.loads(str_data)
+                self.data = DefaultMunch.fromDict(self.data_dict)
+                self.update_differential_data()
             except Exception as e:
                 print(e)
 

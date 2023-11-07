@@ -6,7 +6,7 @@
             "y" : 1,
             "z" : 1
          },
-         "name" : "Brain",
+         "name" : "RobotBrain",
          "physicsMaterial" : "Default",
          "renderable" : "$CONTENT_DATA/Objects/Renderable/obj_interactive_logicgate.rend",
          "rotationSet" : "Default",
@@ -15,6 +15,22 @@
             "filename" : "$CONTENT_DATA/Scripts/EntryPoint.lua"
          },
          "uuid" : "7a043155-56b6-43b2-be66-6cf571d4831d"
+      },
+      {
+         "box" : {
+            "x" : 1,
+            "y" : 1,
+            "z" : 1
+         },
+         "name" : "DroneBrain",
+         "physicsMaterial" : "Default",
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/obj_interactive_logicgate.rend",
+         "rotationSet" : "Default",
+         "scripted" : {
+            "classname" : "main_class",
+            "filename" : "$CONTENT_DATA/Scripts/EntryPoint_Drone.lua"
+         },
+         "uuid" : "9b3064d2-7c86-11ee-b962-0242ac120002"
       }
    ]
 }

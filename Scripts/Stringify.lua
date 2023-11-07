@@ -4,6 +4,7 @@ function stringify(main)
 	rot = shape:getWorldRotation()
 	pos = body:getWorldPosition()
 	vel = shape:getVelocity()
+    print(vel)
 	mass = body:getMass()
 -- 	print(shape.up)
 
@@ -16,7 +17,8 @@ function stringify(main)
 		vel = VectToString(vel),
 		mass_center = VectToString(body.centerOfMassPosition),
 		mass = mass,
-		shape = shapeToString(shape)
+		shape = shapeToString(shape),
+        index = body.id
 	}
     
     out_table.joints = {}
