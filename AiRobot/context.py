@@ -2,6 +2,7 @@ import json
 from munch import DefaultMunch
 
 from utils.actions import Actions
+import numpy as np
 
 
 class Context:
@@ -18,15 +19,16 @@ class Context:
     def __init__(self, read_only=False):
         self.read_only = read_only
         self.output = {}
-        self.acceleration = 0
+        self.acceleration = None
         self.old_dict = None
         self.data_dict = None
         self.refresh()
 
     def update_differential_data(self):
-        if self.old_dict is None: return
+        if self.old_dict is None: 
+            self.old_dict = self.data_dict
         old_data = DefaultMunch.fromDict(self.old_dict)
-        self.acceleration = self.data.acceleration - old_data.acceleration
+        self.acceleration = self.data.vel - old_data.vel
         self.old_dict = self.data_dict
 
     def callback(self):
@@ -40,7 +42,7 @@ class Context:
                 str_data = str_data[1:-2].replace('\\"', '"').replace("\\n", '')
                 self.data_dict = json.loads(str_data)
                 self.data = DefaultMunch.fromDict(self.data_dict)
-                self.update_differential_data()
+                # self.update_differential_data()
             except Exception as e:
                 print(e)
 

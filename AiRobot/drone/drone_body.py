@@ -39,6 +39,8 @@ class DroneBody:
         input = 100 if input > 100 else input
         input = 0 if input < 0 else input
         impulse = self.height_pid(input) * self.mass / 10
+        impulse = 200 if impulse > 200 else impulse
+        impulse = -200 if impulse < -200 else impulse
         # print("order", order, "response", impulse, "actual_height", actual_height, "input", input, "vel", self.vel)
         self.apply_impulse(impulse)
 
@@ -46,7 +48,7 @@ class DroneBody:
         actual_speed = self.vel[2]
         order = speed - actual_speed
         self.height_pid.setpoint = order
-        input = self.context.acceleration[2]
+        input = self.acceleration[2]
         input = 100 if input > 100 else input
         input = 0 if input < 0 else input
         impulse = self.height_pid(input) * self.mass / 10
@@ -60,4 +62,5 @@ class DroneBody:
         self.rot = vectorize_quat(self.context.data.rot)
         self.direction = vectorize(self.context.data.dir)
         self.gravity_center = vectorize(self.context.data.mass_center)
+        self.acceleration = vectorize(self.context.acceleration) if self.context.acceleration is not None else None
         self.shape.refresh(self.context.data.shape)

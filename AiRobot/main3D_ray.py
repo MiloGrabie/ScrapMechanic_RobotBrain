@@ -11,6 +11,7 @@ from scipy.spatial.transform import Rotation as R
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import array
+from utils.toolbox import vectorize
 from utils.plotRobotRay import PlotRobotRay
 
 from context import Context
@@ -18,6 +19,7 @@ from multi_legged.body_ml import Body_ML
 from parts.body import Body
 from training.URDF_Interface import URDF_Interface
 from utils.plotRobot import PlotRobot
+import trimesh
 
 
 def get_orientation(xAxis, yAxis, zAxis):
@@ -35,12 +37,12 @@ class MainPlotRay:
         self.ax = None
         self.context = Context(read_only=True)
         self.plotRobot = PlotRobotRay(self.context)
-        self.run()
+        # self.run()
 
-    def run(self):
-        while True:
-            self.context.refresh()
-            self.plotRobot.refresh_plot()
+    # def run(self):
+    #     while True:
+    #         self.context.refresh()
+    #         # self.plotRobot.refresh_plot()
 
 
 if __name__ == '__main__':

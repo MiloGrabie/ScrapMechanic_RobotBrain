@@ -18,9 +18,10 @@ function stringify(main)
 		mass_center = VectToString(body.centerOfMassPosition),
 		mass = mass,
 		shape = shapeToString(shape),
-        index = body.id
+        index = body.id,
+        at = VectToString(shape.at)
 	}
-    
+
     out_table.joints = {}
 
     for index, joint in ipairs(body:getJoints()) do
@@ -50,7 +51,7 @@ function stringify(main)
 --         print(out_table)
     end
 
-    out_table.raycasts = perform_raycasts()
+    -- out_table.raycasts = perform_raycasts()
     -- print(out_table)
 
 	return out_table
@@ -58,40 +59,38 @@ end
 
 function perform_raycasts()
     
-    raycasts = {}
-	-- valid, raycast = sm.physics.raycast(shape:getWorldPosition(), shape:getWorldRotation(), body)
-    -- table.insert(raycasts, VectToString(raycast.pointWorld))
-    -- print(shape.up, rot)
-    circlePoints = createCircle(shape:getWorldPosition().x, shape:getWorldPosition().y, 100, 20)
+    local raycasts = {}
+    
+    local thetaMin = math.pi / 4 -- minimum theta (in radians)
+    local thetaMax = math.pi / 2 -- maximum theta (in radians)
+    local phiMin = 0 -- minimum phi (in radians)
+    local phiMax = math.pi / 2 -- maximum phi (in radians)
+    local points = createSphereWindow(shape:getWorldPosition(), 500, 50, 50, thetaMin, thetaMax, phiMin, phiMax)
+    -- local points = generateSpherePoints(800, shape:getWorldPosition(), 500)
+    -- print(points)
+
+    local count = 0
+    local pt_count = 0
     -- print(circlePoints)
-    for _, coords in pairs(circlePoints) do
-        vector = shape:getWorldPosition() + sm.vec3.new(coords.x, coords.y, shape:getWorldPosition().z)
+    for _, coords in pairs(points) do
+        vector = sm.vec3.new(coords.x, coords.y, coords.z)
+        -- valid, distance = sm.physics.distanceRaycast(shape:getWorldPosition(), vector)
         valid, raycast = sm.physics.raycast(shape:getWorldPosition(), vector, body)
-        table.insert(raycasts, VectToString(raycast.pointWorld))
+        pt_count = pt_count + 1
+        -- print(raycast)
+        if valid then
+            count = count + 1
+            -- print(shape:getWorldPosition() - raycast.pointWorld)
+            -- raycast = shape:getWorldPosition() + (vector * distance)
+            -- table.insert(raycasts, VectToString(raycast))
+            table.insert(raycasts, VectToString(shape:getWorldPosition() - raycast.pointWorld))
+        end
+        table.insert(raycasts, VectToString(coords))
     end
-    -- print(raycast.pointWorld)
+    print(count, pt_count)
 
     return raycasts
 end
-
--- Function to create a list of vectors that form a circle
--- centerX, centerY is the center of the circle
--- radius is the radius of the circle
--- numPoints is the number of points on the circle
-function createCircle(centerX, centerY, radius, numPoints)
-    local circlePoints = {}
-    local angleStep = (2 * math.pi) / numPoints
-
-    for i = 1, numPoints do
-        local angle = angleStep * (i - 1)
-        local x = centerX + radius * math.cos(angle)
-        local y = centerY + radius * math.sin(angle)
-        table.insert(circlePoints, {x = x, y = y})
-    end
-
-    return circlePoints
-end
-
 
 function jointToJsonTable(joint)
 --     print(sm.joint.getWorldPosition(joint))

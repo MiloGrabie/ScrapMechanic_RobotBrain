@@ -14,37 +14,41 @@ from utils.toolbox import vectorize
 from context import Context
 from multi_legged.body_ml import Body_ML
 from parts.body import Body
+import trimesh
 
 class PlotRobotRay:
 
     def __init__(self, context):
         self.ax = None
         self.context = context
-        self.init_matplot()
+        self.points = []
+        self.init_trimesh()
 
-    def init_matplot(self):
-        plt.ion()
-        fig = plt.figure()
-        self.ax = fig.add_subplot(111, projection='3d')
+    def init_trimesh(self):
+        self.points = [vectorize(point) for point in self.context.data.raycasts[0:10]]
+        self.points.append(vectorize(self.context.data.pos))
+        pointsCloud = trimesh.PointCloud(self.points)
+        axes = trimesh.creation.axis(axis_length=4)
+        sphere = trimesh.creation.icosphere(radius=1)
+        scene = trimesh.Scene([pointsCloud, axes, sphere]).show()
+        # scene.show(callback=self.update_object)
+
+    def update_object(self, scene):
+        pass
+        # self.context.refresh()
+        # self.points.append(np.array([10,10,10 + scene.geometry['geometry_0'].shape[0] - 100]))
+        # self.points = [vectorize(point) for point in self.context.data.raycasts]
+        # print(len(self.points))
+        # scene.geometry['geometry_0'] = trimesh.PointCloud(self.points)
+        # print(scene.geometry['geometry_0'].shape)
+        # scene.graph.update("", geometry='geometry_0')
 
     def refresh_plot(self):
-        self.ax.cla()
+        # print("test")
+        # self.points.append(np.array([10,10,10]))
+        pass
 
-        # for arm in self.body.arms:
-        #     self.scatter3D(arm.foot_pos + arm.default * self.body.direction)
-        #     self.scatter3D(arm.foot_pos)
-            # self.plot3D([j.position for j in arm.joints])
-        # print("centroid", self.body.direction)
-        # self.plot3D([self.body.centroid, self.body.centroid + self.body.direction])
-        # self.rpz_robot()
-        print(self.context.data.raycasts)
 
-        # self.plot3D([vectorize(point) for point in self.context.data.raycasts])
-        
-        [self.scatter3D(vectorize(point)) for point in self.context.data.raycasts]
-
-        plt.draw()
-        plt.pause(10)
 
     def draw_length(self):
         arm = self.body.arms[0]

@@ -35,8 +35,8 @@ class MainDrone:
             self.body.refresh()
 
             # print(self.body.pos)
-            self.body.set_height(30)
-            self.body.go_forward(10)
+            # self.body.go_forward(10)
+            self.body.set_height(-20)
 
             cycle += 1
             time.sleep(0.1)

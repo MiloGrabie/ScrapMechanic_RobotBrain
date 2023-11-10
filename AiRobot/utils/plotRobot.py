@@ -84,7 +84,7 @@ class PlotRobot:
         x, y, z = zip(*points)
         self.ax.plot3D(x, y, z)
 
-    def scatter3D(self, points):
-        x, y, z = zip(points)
+    def scatter3D(self, point):
+        x, y, z = zip(point)
         self.ax.scatter(x, y, z)
 

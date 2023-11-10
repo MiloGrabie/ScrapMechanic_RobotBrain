@@ -86,8 +86,6 @@ function read(self, deltaTime)
 	    return
     end
 
-	if input.
-
 	if input.setTargetAngle ~= nil then
 		for index, joint in ipairs(input.setTargetAngle) do
 -- 			print(joint.targetAngle, joint.angularVelocity, joint.maxImpulse)

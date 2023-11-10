@@ -24,7 +24,7 @@
          },
          "name" : "DroneBrain",
          "physicsMaterial" : "Default",
-         "renderable" : "$CONTENT_DATA/Objects/Renderable/obj_interactive_logicgate.rend",
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/obj_interactive_sensor.rend",
          "rotationSet" : "Default",
          "scripted" : {
             "classname" : "main_class",
