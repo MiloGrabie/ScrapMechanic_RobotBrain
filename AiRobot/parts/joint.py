@@ -31,7 +31,7 @@ class Joint(Part):
         self.angularVelocity = 10
         self.maxImpulse = 5000
         self.joints = []
-        self.getChildJoint(part)
+        self.updateChildrenJoints(part)
 
     def updateRelativePosition(self, body_position):
         self.relativePosition = self.position - body_position
@@ -40,13 +40,15 @@ class Joint(Part):
     def position(self):
         return self.worldPosition
 
-    def getChildJoint(self, part):
+    def updateChildrenJoints(self, part):
         self.length = 0
         if 'joints' in part:
-            for joint in part.joints:
+            for joint in part.joints: # normally, there's only one joint on the next shape
                 next_joint = Joint(self.context, joint)
                 self.joints.append(next_joint)
-                self.length = (next_joint.localPosition - self.localPosition)/4
+                # self.length = (next_joint.localPosition - self.localPosition)/4
+                # next_joint.length = (self.localPosition - next_joint.localPosition)/4
+                # print(self.length)
                 # self.length = (self.localPosition-local_joint.localPosition)/4
                 # self.length = local_joint.worldPosition - self.worldPosition
 

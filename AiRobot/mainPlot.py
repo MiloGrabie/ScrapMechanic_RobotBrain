@@ -35,13 +35,14 @@ class MainPlot:
         self.context = Context(read_only=True)
         self.body = Body_ML(self.context)
         self.plotRobot = PlotRobot(self.context, self.body)
-        self.URDF_Interface = URDF_Interface(self.body)
+        #self.URDF_Interface = URDF_Interface(self.body)
         self.run()
 
     def run(self):
         while True:
             self.context.refresh()
             self.body.refresh()
+            self.body.brain.control_latitude()
             self.plotRobot.refresh_plot()
 
 

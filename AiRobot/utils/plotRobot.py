@@ -55,28 +55,42 @@ class PlotRobot:
         self.plot3D(points)
 
     def rpz_robot(self):
-        arm = self.body.arms[0]
-        arms = [arm.siblings[0], arm, arm.siblings[1]]
-        other_arm = [a for a in self.body.arms if a not in arms][0]
-        arms.append(other_arm)
-        arms.insert(0, other_arm)
+        # arm = self.body.arms[0]
+        # arms = [arm.siblings[0], arm, arm.siblings[1]]
+        # other_arm = [a for a in self.body.arms if a not in arms][0]
+        # arms.append(other_arm)
+        # arms.insert(0, other_arm)
         # for arm in self.body.arms:
         #     points = [a.first_joint.position for a in [arm.siblings[0], arm, arm.siblings[1]]]
-        self.plot3D([a.first_joint.position for a in arms])
+        # self.plot3D([a.first_joint.position for a in self.body.arms])
+
+        # for arm in self.body.arms:
+        #     self.plot3D([j.position for j in arm.joints])
+        #     #self.scatter3D(arm.first_joint.position + arm.objective)
+
+        # velocity_vector = self.body.velocity
+        # start_point = self.body.centroid
+        # end_point = start_point + velocity_vector
+        # self.plot3D([start_point, end_point])
 
         for arm in self.body.arms:
-            self.plot3D([j.position for j in arm.joints])
+            length = [0,0,0]
+            for j in arm.joints:
+                # self.scatter3D(j.localPosition)
+                length += j.length
+                self.scatter3D(length)
+            
 
-        if self.body.gravity_center is not None:
-            self.scatter3D(self.body.gravity_center)
-            gc = self.body.gravity_center
-            gc[2] = 0
-            self.scatter3D(gc)
+        # if self.body.gravity_center is not None:
+        #     self.scatter3D(self.body.gravity_center)
+        #     gc = self.body.gravity_center
+        #     gc[2] = 0
+        #     self.scatter3D(gc)
         # [self.scatter3D(a.default) for a in arms]
 
         # print(arms[0].first_joint.position - arms[1].end_joint.position)
 
-        points = [a.end_joint.position for a in arms]
+        points = [a.end_joint.position for a in self.body.arms]
         x, y, z = zip(*points)
         self.ax.plot3D(x, y, [0] * len(points))
 

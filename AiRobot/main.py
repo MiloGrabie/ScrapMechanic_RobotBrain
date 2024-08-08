@@ -27,7 +27,7 @@ class Main:
         self.run()
 
     def init_object(self):
-        self.body = DogBody(self.context)
+        self.body = Body_ML(self.context)
 
     def run(self):
         self.context.refresh()
@@ -35,7 +35,7 @@ class Main:
         # self.context.clearAction()
         # time.sleep(1)
         # value = [-1.5, 0, -1]
-        value = [0.75, 0.25, -1.5]
+        value = [1, 0, -1.5]
         objective = np.array(value)
 
         self.body.brain.setArms(objective)
@@ -48,9 +48,10 @@ class Main:
         while True:
             self.context.refresh()
             self.body.refresh()
+            #self.body.brain.control_latitude()
             # self.plotRobot.refresh_plot()
 
-            self.body.brain.forward()
+            #self.body.brain.forward()
 
             # value[0] -= 0.01
             # value[1] += 0.01
@@ -60,6 +61,8 @@ class Main:
 
             arm = self.body.arms[0]
 
+
+            self.body.brain.setArms(np.array([1, 0, -1]))
             # print(self.body.arms[0].default)
             # if cycle % 80 == 0:
             #     value = [-0.75, 0.25, -1.5]
@@ -72,7 +75,7 @@ class Main:
             # self.body.brain.doMagic()
             # self.body.brain.move([1,0])
             cycle += 1
-            time.sleep(0.1)
+            time.sleep(0.001)
 
 
 if __name__ == '__main__':

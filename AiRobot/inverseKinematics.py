@@ -36,6 +36,7 @@ class InverseKinematics:
             )
         ]
         for index, joint in enumerate(arm.joints):
+            # if index == len(arm.joints) - 1:  # last one
             if index == len(arm.joints) - 1:  # last one
                 # links.append(
                 #     URDFLink(
@@ -72,6 +73,9 @@ class InverseKinematics:
         if vect == [1, 0, 0]: return "x"
         if vect == [0, 1, 0]: return "y"
         if vect == [0, 0, 1]: return "z"
+
+    def visualize(self):
+        tinyik.visualize(self.actuator)
 
 
 def calc(length_first, length_second, length_third):

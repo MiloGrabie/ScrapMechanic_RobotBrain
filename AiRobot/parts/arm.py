@@ -29,6 +29,13 @@ class Arm:
             joints.append(joint)
             if len(joint.joints) == 0: break
             joint = joint.joints[0]
+
+        for index, j in enumerate(joints):
+            if index == len(joints) - 1:
+                j.length = [0,0,0]
+            else:
+                j.length = (j.localPosition - joints[index + 1].localPosition)/4
+
         return joints
 
     def init_end_joint(self):

@@ -1,4 +1,4 @@
-function stringify(main, camera_data)
+function stringify(main)
 	shape = main.interactable.shape
 	body = main.interactable:getBody()
 	rot = shape:getWorldRotation()
@@ -6,8 +6,6 @@ function stringify(main, camera_data)
 	vel = shape:getVelocity()
     print(vel)
 	mass = body:getMass()
-
-    print(camera_data)
 
 --     print(body.centerOfMassPosition)
 	out_table = {
@@ -20,15 +18,30 @@ function stringify(main, camera_data)
 		mass = mass,
 		shape = shapeToString(shape),
         index = body.id,
-        camera_dir = VectToString(camera_data),
         at = VectToString(shape.at)
 	}
 
     out_table.joints = {}
 
+    local connectedInteractables = main.interactable:getChildren(sm.interactable.connectionType.bearing)
+
     for index, joint in ipairs(body:getJoints()) do
         -- print(joint.type)
         if joint.type == 'bearing' then
+
+            local is_connected = false
+
+            for _, connectedInteractable in ipairs(connectedInteractables) do
+                if joint.id == connectedInteractable.id then
+                        is_connected = true
+                    break
+                end
+            end
+
+            if is_connected == false then
+                goto continue
+            end
+                
 
     --         joint = body:getJoints()[1]
             first_joint = joint
@@ -46,6 +59,9 @@ function stringify(main, camera_data)
                     joint = nil
                 end
             end
+
+
+            ::continue::
         end
 --         print(joint_dico.joints)
 --         print(first_joint.id)
