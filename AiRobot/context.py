@@ -24,6 +24,26 @@ class Context:
         self.data_dict = None
         self.refresh()
 
+    def set_camera_direction(self, direction_vector):
+        """
+        Set the camera direction based on the given vector.
+        
+        :param direction_vector: A list or numpy array with 3 elements [x, y, z]
+        """
+        if not isinstance(direction_vector, (list, np.ndarray)) or len(direction_vector) != 3:
+            raise ValueError("Direction vector must be a list or numpy array with 3 elements")
+        
+        self.output['camera'] = {
+            'x': float(direction_vector[0]),
+            'y': float(direction_vector[1]),
+            'z': float(direction_vector[2])
+        }
+        self.callback()
+
+    def destruct(self, index):
+        self.output['destruct'] = index
+        self.callback()
+
     def update_differential_data(self):
         if self.old_dict is None: 
             self.old_dict = self.data_dict

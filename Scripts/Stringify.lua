@@ -1,4 +1,4 @@
-function stringify(main)
+function stringify(main, camera_data)
 	shape = main.interactable.shape
 	body = main.interactable:getBody()
 	rot = shape:getWorldRotation()
@@ -6,7 +6,8 @@ function stringify(main)
 	vel = shape:getVelocity()
     print(vel)
 	mass = body:getMass()
--- 	print(shape.up)
+
+    print(camera_data)
 
 --     print(body.centerOfMassPosition)
 	out_table = {
@@ -19,6 +20,7 @@ function stringify(main)
 		mass = mass,
 		shape = shapeToString(shape),
         index = body.id,
+        camera_dir = VectToString(camera_data),
         at = VectToString(shape.at)
 	}
 

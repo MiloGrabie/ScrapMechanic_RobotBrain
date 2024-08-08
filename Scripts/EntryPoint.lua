@@ -69,7 +69,7 @@ function read(self, deltaTime)
 	body = self.interactable:getBody()
 -- 	print(shape.localPosition)
 	input = read_input()
-	
+
 	sm.json.save(sm.json.writeJsonString(stringify(self)), "$MOD_DATA/Scripts/JSON/interface_out.json")
 
 	-- print(shape:getWorldPosition())

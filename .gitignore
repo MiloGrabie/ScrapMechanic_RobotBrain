@@ -3,3 +3,4 @@ Cache
 .idea
 venv
 __pycache__
+.cosine

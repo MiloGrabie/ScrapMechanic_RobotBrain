@@ -19,41 +19,74 @@ class DroneBody:
         self.rot = vectorize_quat(self.context.data.rot)
         self.direction = vectorize(self.context.data.dir)
         self.shape = Shape(self.context.data.shape)
-        self.mass = self.context.data.mass
+        self.mass = self.context.data.mass  
         self.apply_impulse()
-        self.height_pid = PID(0.5, 0.1, 0.01)
-        self.front_speed = PID(0.5, 0.1, 0.01)
+        self.height_pid = PID(2, 0.01, 0.1)
+        self.front_speed = PID(2, 0.01, 0.01)
+        self.pitch_pid = PID(1, 0.01, 0.8)
+        self.pitch_pid = PID(1, 0.05, 0.8)
+        self.order_vector = array([0.0, 0.0, 0.0])
 
-    def apply_impulse(self, impulse = 0):        
+    def apply_impulse(self, impulse_vector=[0, 0, 0]):
         action = {
             "index": self.index,
-            "impulse_vector": [0,0,impulse],
+            "impulse_vector": impulse_vector,
         }
         self.context.registerAction(Actions.ApplyImpulse, action)
+
+    def apply_torque(self, torque_vector=[0, 0, 0]):
+        action = {
+            "index": self.index,
+            "torque_vector": torque_vector,
+        }
+        self.context.registerAction(Actions.ApplyTorque, action)
+
+    def add_order_vector(self, order_vector):
+        new_order_vector = array(order_vector)
+        max_value = 300.0
+        self.order_vector = array([
+            self.order_vector[0] if new_order_vector[0] == 0 else max(-max_value, min(max_value, new_order_vector[0])),
+            self.order_vector[1] if new_order_vector[1] == 0 else max(-max_value, min(max_value, new_order_vector[1])),
+            self.order_vector[2] if new_order_vector[2] == 0 else max(-max_value, min(max_value, new_order_vector[2]))
+        ])
+        #print(self.order_vector)
+        self.apply_impulse([float(self.order_vector[0]), float(self.order_vector[1]), float(self.order_vector[2])])
 
     def set_height(self, height):
         actual_height = self.context.data.pos['z']
         order = height - actual_height
         self.height_pid.setpoint = order
         input = self.vel[2]
-        input = 100 if input > 100 else input
+        input = 200 if input > 200 else input
         input = 0 if input < 0 else input
         impulse = self.height_pid(input) * self.mass / 10
-        impulse = 200 if impulse > 200 else impulse
-        impulse = -200 if impulse < -200 else impulse
+        impulse = max(-200, min(200, impulse))
         # print("order", order, "response", impulse, "actual_height", actual_height, "input", input, "vel", self.vel)
-        self.apply_impulse(impulse)
+        self.add_order_vector([0, 0, impulse])
 
     def go_forward(self, speed):
-        actual_speed = self.vel[2]
+        actual_speed = self.vel[1]
         order = speed - actual_speed
-        self.height_pid.setpoint = order
-        input = self.acceleration[2]
+        self.front_speed.setpoint = order
+        input = self.context.acceleration[2] if self.context.acceleration is not None else 0
         input = 100 if input > 100 else input
         input = 0 if input < 0 else input
-        impulse = self.height_pid(input) * self.mass / 10
-        print("order", order, "response", impulse, "actual_speed", actual_speed, "input", input, "acceleration", self.context.acceleration)
-        self.apply_impulse(impulse)
+        impulse = self.front_speed(input) * self.mass / 10
+        impulse = max(-1000, min(1000, impulse))
+        #print("order", order, "response", impulse, "actual_speed", actual_speed, "input", input, "acceleration", self.context.acceleration)
+        self.add_order_vector([0, impulse, 0])
+
+    def stabilize_pitch_and_roll(self, yaw):
+        rotation = R.from_quat(self.rot)
+        current_row = rotation.as_euler('xyz')[0]
+        current_pitch = -rotation.as_euler('xyz')[1]
+        print('current', current_row, current_pitch)
+        
+        row_correction = self.pitch_pid(current_row) * self.mass / 10
+        pitch_correction = self.pitch_pid(current_pitch) * self.mass / 10
+        
+        #print('correction', pitch_correction, pitch_correction)
+        self.apply_torque([pitch_correction, row_correction, yaw])
 
     
     def refresh(self):
