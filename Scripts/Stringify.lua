@@ -1,19 +1,67 @@
+function calculateLocalVelocity(shape)
+    -- Get the shape's world velocity
+    local worldVelocity = shape:getVelocity()
+    
+    -- Get the shape's world rotation
+    local worldRotation = shape:getWorldRotation()
+    
+    -- Calculate the inverse rotation
+    local inverseRotation = sm.quat.inverse(worldRotation)
+    
+    -- Transform the world velocity to local space
+    local localVelocity = inverseRotation * worldVelocity
+    
+    return localVelocity
+end
+
+-- Add these variables at the top of the file, outside any function
+local prev_local_velocity = nil
+local prev_time = nil
+
+-- New function to calculate local acceleration
+function calculateLocalAcceleration(local_velocity)
+    local local_acceleration = {x = 0, y = 0, z = 0}
+    local current_time = sm.game.getCurrentTick() / 40  -- Convert ticks to seconds (assuming 40 ticks per second)
+    
+    if prev_local_velocity and prev_time then
+        local delta_time = current_time - prev_time
+        if delta_time > 0 then
+            local_acceleration = {
+                x = (local_velocity.x - prev_local_velocity.x) / delta_time,
+                y = (local_velocity.y - prev_local_velocity.y) / delta_time,
+                z = (local_velocity.z - prev_local_velocity.z) / delta_time
+            }
+        end
+    end
+
+    -- Update previous values for next calculation
+    prev_local_velocity = local_velocity
+    prev_time = current_time
+
+    return local_acceleration
+end
+
 function stringify(main)
 	shape = main.interactable.shape
 	body = main.interactable:getBody()
 	rot = shape:getWorldRotation()
 	pos = body:getWorldPosition()
-	vel = shape:getVelocity()
-    print(vel)
+	vel = body:getVelocity()
+    local_velocity = calculateLocalVelocity(shape)
+    print(pos)
 	mass = body:getMass()
+    
+    -- Calculate local acceleration
+    local_acceleration = calculateLocalAcceleration(local_velocity)
 
---     print(body.centerOfMassPosition)
 	out_table = {
 		rot = QuatToString(rot),
 		pos = VectToString(pos),
 -- 		dir = VectToString(rot * sm.vec3.new(0,0,1)),
 		dir = VectToString(-shape.right),
 		vel = VectToString(vel),
+        local_velocity = VectToString(local_velocity),
+        local_acceleration = VectToString(local_acceleration),
 		mass_center = VectToString(body.centerOfMassPosition),
 		mass = mass,
 		shape = shapeToString(shape),
@@ -146,6 +194,7 @@ function shapeToString(shape)
         rot = QuatToString(shape.worldRotation),
         at = VectToString(shape.at),
         up = VectToString(shape.up),
+        vel = VectToString(calculateLocalVelocity(shape))
     }
 end
 

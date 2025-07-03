@@ -19,7 +19,7 @@ class PlotRobot:
     def __init__(self, context, body):
         self.ax = None
         self.context = context
-        self.body = body
+        self.body : Body = body
         self.init_matplot()
 
     def init_matplot(self):
@@ -76,9 +76,9 @@ class PlotRobot:
         for arm in self.body.arms:
             length = [0,0,0]
             for j in arm.joints:
-                # self.scatter3D(j.localPosition)
+                self.scatter3D(j.localPosition)
                 length += j.length
-                self.scatter3D(length)
+                # self.scatter3D(length)
             
 
         # if self.body.gravity_center is not None:
@@ -90,9 +90,9 @@ class PlotRobot:
 
         # print(arms[0].first_joint.position - arms[1].end_joint.position)
 
-        points = [a.end_joint.position for a in self.body.arms]
-        x, y, z = zip(*points)
-        self.ax.plot3D(x, y, [0] * len(points))
+        # points = [a.end_joint.position for a in self.body.arms]
+        # x, y, z = zip(*points)
+        # self.ax.plot3D(x, y, [0] * len(points))
 
     def plot3D(self, points):
         x, y, z = zip(*points)

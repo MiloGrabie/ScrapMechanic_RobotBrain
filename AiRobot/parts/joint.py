@@ -29,7 +29,7 @@ class Joint(Part):
         self.worldRotation = vectorize_quat(part.rotation)
         self.direction = -vectorize(part.direction)
         self.angularVelocity = 10
-        self.maxImpulse = 5000
+        self.maxImpulse = 1000
         self.joints = []
         self.updateChildrenJoints(part)
 
@@ -39,6 +39,10 @@ class Joint(Part):
     @property
     def position(self):
         return self.worldPosition
+    
+    @property
+    def velocity(self):
+        return self.shapeB.velocity
 
     def updateChildrenJoints(self, part):
         self.length = 0

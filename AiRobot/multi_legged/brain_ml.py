@@ -1,8 +1,9 @@
 from numpy import array, dot
 from numpy.linalg import norm
+from pyparsing import Optional
 from shapely import geometry
 from scipy.spatial.transform import Rotation as R
-
+import copy
 
 
 from utils.toolbox import getFarthestPoint
@@ -13,6 +14,7 @@ class Brain_ML(Brain):
 
     def __init__(self, body):
         super().__init__(body)
+        self.stored_arms = [copy.deepcopy(arm) for arm in body.arms]
 
     def move(self, direction):
         for arm in self.body.arms:
@@ -24,6 +26,8 @@ class Brain_ML(Brain):
         for arm in self.body.arms:
             arm.objective = objective
             arm.move()
+        
+        self.stored_arms = [copy.deepcopy(arm) for arm in self.body.arms]
     
 
     def doMagic(self):
@@ -74,35 +78,41 @@ class Brain_ML(Brain):
         return min(pos_list)[1]
 
     def control_latitude(self):
-        for arm in self.body.arms:
-
+        height = -1.5
+        #print(self.body.local_velocity)
+        
+        for index, arm in enumerate(self.body.arms):
+            if index != 0: continue
             delta = arm.first_joint.position - arm.end_joint.position
 
             # Calculate horizontal and vertical distance
             horizontal_distance = abs(delta[0]) + abs(delta[1])
             vertical_distance = abs(delta[2])
 
-            distance = 30
+            distance = 20
             #print(delta, horizontal_distance)
-
-            #self.body.context.clearAction()
-            print(self.body.velocity)
 
             if horizontal_distance > distance :
                 # Move the arm behind the first_joint
                 # new_objective = array([first_joint_pos[0], first_joint_pos[1], arm.objective[2]])
-                new_objective = array([0,0,-1.5])
+                new_objective = array([0,0,height])
                 #print(new_objective)
-                #arm.move(new_objective)
+                arm.move(new_objective)
+                
+                self.stored_arms[index] = copy.deepcopy(arm)
             else :
-                delta_vel = array([
-                    (self.body.velocity[0] / 3),
-                    (self.body.velocity[1] / 3),
-                    0
-                ])
-                delta = array([0,0.1,0])
+                delta_pos = arm.end_joint.position - self.stored_arms[index].end_joint.position
+                # delta_vel = array([
+                #     (self.body.local_velocity[0] / 4),
+                #     (self.body.local_velocity[1] / 4),
+                #     0
+                # ])
+
+                delta = (delta_pos) * [0, 0, 1]
                 # Add the delta to the objective
-                new_objective = array([arm.objective[0], arm.objective[1], -1] - delta_vel)
+                print(delta, "delta")
+                new_objective = array(self.stored_arms[index].objective + delta)
+                print(new_objective)
                 #print(new_objective)
                 arm.move(new_objective)
 

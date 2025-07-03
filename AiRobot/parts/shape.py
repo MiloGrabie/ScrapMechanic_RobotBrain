@@ -12,6 +12,7 @@ class Shape:
         self.rot = None
         self.pos = None
         self.up = None
+        self.velocity = None
         self.refresh(shape)
 
     def refresh(self, shape):
@@ -19,4 +20,5 @@ class Shape:
         self.rot = vectorize_quat(shape.rot)
         self.at = vectorize(shape.at)
         self.up = vectorize(shape.up)
+        self.velocity = vectorize(shape.vel)
         self.direction = array(R.from_quat(self.rot).as_rotvec())

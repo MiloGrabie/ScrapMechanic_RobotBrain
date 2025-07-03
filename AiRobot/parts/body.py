@@ -25,6 +25,8 @@ class Body:
         self.direction = vectorize(self.context.data.dir)
         self.shape = Shape(self.context.data.shape)
         self.velocity = vectorize(self.context.data.vel)
+        self.local_velocity = vectorize(self.context.data.local_velocity)
+        self.local_acceleration = vectorize(self.context.data.local_acceleration)
         self.gravity_center = None
         self.setBrain()
 
@@ -44,6 +46,9 @@ class Body:
         self.direction = vectorize(self.context.data.dir)
         self.shape.refresh(self.context.data.shape)
         self.velocity = vectorize(self.context.data.vel)
+        self.local_velocity = vectorize(self.context.data.local_velocity)
+        self.local_acceleration = vectorize(self.context.data.local_acceleration)
+
 
     def init_joints(self):
         if self.context.data.joints is None: return
